@@ -1,16 +1,17 @@
 import { sql } from '../../lib/db';
 import { getSession } from '../../lib/session';
 import { genPersona } from '../../lib/persona';
+import { logActivity } from '../../lib/activity';
 
 var LOYALTY_GOAL = 8;
 
 export default async function handler(req, res) {
-  var session = await getSession(req, res);
-  if (!session.uid) return res.status(401).json({ error: 'Не авторизован' });
-
   try {
+    var session = await getSession(req, res);
+    if (!session.uid) return res.status(401).json({ error: 'Не авторизован' });
+
     if (req.method === 'GET') {
-      var rows = await sql`SELECT id, username, nick, emoji, loyalty FROM accounts WHERE id = ${session.uid}`;
+      var rows = await sql`SELECT id, username, nick, emoji, loyalty, is_admin FROM accounts WHERE id = ${session.uid}`;
       if (!rows[0]) return res.status(401).json({ error: 'Не авторизован' });
       return res.status(200).json(rows[0]);
     }
@@ -29,6 +30,7 @@ export default async function handler(req, res) {
         var val = (cur[0] && cur[0].loyalty) || 0;
         var next = val >= LOYALTY_GOAL ? 0 : val + 1;
         await sql`UPDATE accounts SET loyalty = ${next} WHERE id = ${session.uid}`;
+        await logActivity(session.uid, 'loyalty', 'self +1');
         return res.status(200).json({ loyalty: next });
       }
 
@@ -38,6 +40,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (e) {
     console.error('me error', e);
-    return res.status(500).json({ error: 'Что-то пошло не так' });
+    return res.status(500).json({ error: e.isSessionError ? e.message : 'Что-то пошло не так' });
   }
 }

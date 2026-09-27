@@ -1,5 +1,6 @@
--- Запустите этот файл один раз в Query-вкладке вашей базы данных на Vercel
--- (Storage → ваша база → Query), либо через psql, подключившись по POSTGRES_URL.
+-- Запустите этот файл один раз в Query-вкладке вашей базы данных
+-- (Vercel → Storage → ваша база, или сразу в Neon → Query), КАЖДУЮ команду отдельно —
+-- некоторые SQL-консоли (в т.ч. Neon) не разрешают выполнять несколько команд за раз.
 
 CREATE TABLE IF NOT EXISTS accounts (
   id          text PRIMARY KEY,          -- нормализованный логин (латиница/цифры/._-)
@@ -8,6 +9,7 @@ CREATE TABLE IF NOT EXISTS accounts (
   nick        text NOT NULL,             -- анонимный ник, который видят другие
   emoji       text NOT NULL,             -- аватар-эмодзи
   loyalty     integer NOT NULL DEFAULT 0,
+  is_admin    boolean NOT NULL DEFAULT false,
   created_at  timestamptz NOT NULL DEFAULT now()
 );
 
@@ -36,3 +38,13 @@ CREATE TABLE IF NOT EXISTS comments (
 );
 
 CREATE INDEX IF NOT EXISTS comments_invite_idx ON comments (invite_id);
+
+CREATE TABLE IF NOT EXISTS activity (
+  id          text PRIMARY KEY,
+  account_id  text NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+  kind        text NOT NULL,             -- 'checkin' | 'leave' | 'invite' | 'comment' | 'loyalty'
+  detail      text,
+  at          timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS activity_at_idx ON activity (at);

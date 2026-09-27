@@ -1,11 +1,12 @@
 import { sql } from '../../lib/db';
 import { getSession } from '../../lib/session';
 import { newId } from '../../lib/ids';
+import { logActivity } from '../../lib/activity';
 
 export default async function handler(req, res) {
-  var session = await getSession(req, res);
-
   try {
+    var session = await getSession(req, res);
+
     if (req.method === 'GET') {
       var rows = await sql`
         SELECT c.id, c.invite_id, c.uid, c.text, c.at, a.nick, a.emoji
@@ -24,12 +25,13 @@ export default async function handler(req, res) {
       if (!text || !inviteId) return res.status(400).json({ error: 'Пустой комментарий' });
       var id = newId('c');
       await sql`INSERT INTO comments (id, invite_id, uid, text, at) VALUES (${id}, ${inviteId}, ${session.uid}, ${text}, now())`;
+      await logActivity(session.uid, 'comment', text.slice(0, 80));
       return res.status(200).json({ id: id });
     }
 
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (e) {
     console.error('comments error', e);
-    return res.status(500).json({ error: 'Что-то пошло не так' });
+    return res.status(500).json({ error: e.isSessionError ? e.message : 'Что-то пошло не так' });
   }
 }

@@ -77,6 +77,8 @@ h1,h2,h3,p{margin:0}
 .btn.ghost{border:2px solid var(--on-mint);color:var(--on-mint)}
 .btn.main{background:var(--mint);color:var(--on-mint)}
 .btn.line{border:2px solid var(--line);color:var(--ink)}
+.login .btn.line{border-color:#3A4A34;color:#EAF2EE}
+.login .btn.main{color:var(--on-mint)}
 .btn.danger{border:2px solid var(--coral);color:var(--coral)}
 .btn.small{padding:9px 15px;min-height:38px;font-size:14px}
 .btn.big{width:100%;margin-top:16px;padding:16px 20px;font-size:18px;font-family:var(--display);font-weight:700}
@@ -263,12 +265,15 @@ var apiStore={
   createInvite:function(text,date,time){return api('/api/invites',{method:'POST',body:JSON.stringify({text:text,date:date,time:time})});},
   deleteInvite:function(id){return api('/api/invites?id='+encodeURIComponent(id),{method:'DELETE'});},
   commentsList:function(){return api('/api/comments');},
-  addComment:function(inviteId,text){return api('/api/comments',{method:'POST',body:JSON.stringify({inviteId:inviteId,text:text})});}
+  addComment:function(inviteId,text){return api('/api/comments',{method:'POST',body:JSON.stringify({inviteId:inviteId,text:text})});},
+  adminUsers:function(){return api('/api/admin/users');},
+  adminLoyaltyPlus:function(id){return api('/api/admin/loyalty',{method:'POST',body:JSON.stringify({id:id})});},
+  adminActivity:function(date){return api('/api/admin/activity?date='+encodeURIComponent(date));}
 };
 
 /* ---------- Состояние ---------- */
 var $app=document.getElementById('app'),$sheet=document.getElementById('sheet'),$toast=document.getElementById('toast');
-var state={screen:'boot',tab:'cafe',authMode:'login',uid:null,username:null,me:null,loyalty:0,presence:[],invites:[],comments:[],loginErr:'',loginBusy:false};
+var state={screen:'boot',tab:'cafe',authMode:'login',uid:null,username:null,me:null,loyalty:0,isAdmin:false,presence:[],invites:[],comments:[],adminUsers:[],adminActivity:[],adminDate:todayStr(),loginErr:'',loginBusy:false};
 var sheet=null,lastFocus=null,raf=0,toastT=0,polls=[];
 
 function people(){var t=Date.now();return state.presence.filter(function(p){return ZB[p.zone]&&t-toMillis(p.at)<6*H;});}
@@ -280,7 +285,8 @@ function commentsOf(id){return state.comments.filter(function(c){return c.invite
 var ICONS={
   cafe:'<svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7"/><path d="M6 11v9h12v-9"/><path d="M10 20v-5h4v5"/></svg>',
   inv:'<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>',
-  me:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4-6 8-6s7 1.5 8 6"/></svg>'
+  me:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4-6 8-6s7 1.5 8 6"/></svg>',
+  admin:'<svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>'
 };
 
 /* ---------- Рендер ---------- */
@@ -289,13 +295,14 @@ function render(){
   if(state.screen==='login'){$app.innerHTML=loginView();return;}
   var sc=document.getElementById('main'),top=sc?sc.scrollTop:0;
   var n=people().length,ni=activeInvites().length;
-  var body=state.tab==='cafe'?cafeView():state.tab==='invites'?invitesView():profileView();
+  var body=state.tab==='cafe'?cafeView():state.tab==='invites'?invitesView():state.tab==='admin'?adminView():profileView();
   $app.innerHTML=
     '<header class="top"><div class="brand"><img src="'+LOGO_ICON+'" alt=""><div class="brand-txt"><span class="brand-t">Seal&amp;Tea</span><span class="brand-s">Я здесь</span></div></div>'+
     '<div class="pill">В зале: '+n+'</div></header>'+
     '<main class="scroll" id="main">'+body+'</main>'+
     '<nav class="tabs" aria-label="Разделы">'+
       tab('cafe','Кафе',ICONS.cafe,0)+tab('invites','Приглашения',ICONS.inv,ni)+tab('me','Профиль',ICONS.me,0)+
+      (state.isAdmin?tab('admin','Админ',ICONS.admin,0):'')+
     '</nav>';
   var m=document.getElementById('main');if(m)m.scrollTop=top;
   tick();
@@ -331,7 +338,7 @@ function doAuth(){
   state.loginErr='';state.loginBusy=true;render();
   var call=state.authMode==='register'?apiStore.register(u,p):apiStore.login(u,p);
   call.then(function(acc){
-    state.uid=acc.id;state.username=acc.username;state.me={nick:acc.nick,emoji:acc.emoji};state.loyalty=Number(acc.loyalty)||0;
+    state.uid=acc.id;state.username=acc.username;state.me={nick:acc.nick,emoji:acc.emoji};state.loyalty=Number(acc.loyalty)||0;state.isAdmin=!!acc.is_admin;
     afterLogin();
   }).catch(function(e){
     state.loginBusy=false;
@@ -347,7 +354,7 @@ function afterLogin(){
 function logout(){
   polls.forEach(function(id){clearInterval(id);});polls=[];
   apiStore.logout().catch(function(){});
-  state.uid=null;state.username=null;state.me=null;state.loyalty=0;state.presence=[];state.invites=[];state.comments=[];
+  state.uid=null;state.username=null;state.me=null;state.loyalty=0;state.isAdmin=false;state.presence=[];state.invites=[];state.comments=[];state.adminUsers=[];state.adminActivity=[];
   state.screen='login';state.authMode='login';state.loginErr='';render();
 }
 
@@ -408,9 +415,52 @@ function invitesView(){
   }).join('');
 }
 
+/* ---------- Админ ---------- */
+function fmtActTime(ms){var d=new Date(ms);return pad(d.getHours())+':'+pad(d.getMinutes());}
+function fmtDateOnly(date){var p=(date||'').split('-');if(p.length<3)return date||'';var d=new Date(+p[0],+p[1]-1,+p[2]);return d.getDate()+' '+MONTHS[d.getMonth()]+' '+d.getFullYear();}
+function actLabel(row){
+  var name=esc(row.nick)+' ('+esc(row.username)+')';
+  if(row.kind==='checkin'){var z=ZB[row.detail];return name+' отметил(-ась): '+(z?esc(z.name):esc(row.detail));}
+  if(row.kind==='leave'){return name+' ушёл(ушла) с карты';}
+  if(row.kind==='invite'){return name+' создал(а) приглашение: «'+esc(row.detail||'')+'»';}
+  if(row.kind==='comment'){return name+' написал(а) комментарий: «'+esc(row.detail||'')+'»';}
+  if(row.kind==='loyalty'){
+    var byAdmin=/^admin:/.test(row.detail||'');
+    return name+(byAdmin?' получил(а) чашку от администратора':' сам(а) отметил(а) чашку');
+  }
+  return name+' · '+esc(row.kind);
+}
+function adminView(){
+  var users=state.adminUsers.slice().sort(function(a,b){return a.username<b.username?-1:1;});
+  var usersHtml=users.length?users.map(function(u){
+    return '<div class="person"><span class="avl">'+esc(String(u.emoji||'🙂').slice(0,4))+'</span>'+
+      '<div style="flex:1"><b>'+esc(u.nick)+'</b><span class="m">'+esc(u.username)+' · '+u.loyalty+' / 8'+(u.is_admin?' · админ':'')+'</span></div>'+
+      '<button class="btn main small" data-a="admin-loyalty-plus" data-id="'+esc(u.id)+'">+1 чашка</button></div>';
+  }).join(''):'<p class="hint">Пока никто не зарегистрировался.</p>';
+
+  var acts=state.adminActivity;
+  var actsHtml=acts.length?acts.map(function(r){
+    return '<div class="person"><span class="avl">'+esc(String(r.emoji||'🙂').slice(0,4))+'</span>'+
+      '<div style="flex:1"><b>'+fmtActTime(toMillis(r.at))+'</b><span class="m">'+actLabel(r)+'</span></div></div>';
+  }).join(''):'<p class="hint">За этот день событий не было.</p>';
+
+  var isToday=state.adminDate===todayStr();
+  return '<div class="sec"><h2>Гости</h2></div><div class="card">'+usersHtml+'</div>'+
+    '<div class="sec" style="margin-top:22px"><h2>События'+(isToday?' сегодня':'')+'</h2>'+
+    '<div class="row" style="margin-top:0"><button class="btn line small" data-a="admin-day" data-d="-1">← День назад</button>'+
+    (isToday?'':'<button class="btn line small" data-a="admin-day" data-d="1">Вперёд →</button>')+'</div></div>'+
+    '<p class="hint" style="margin-top:0">'+esc(fmtDateOnly(state.adminDate))+'</p>'+
+    '<div class="card">'+actsHtml+'</div>';
+}
+function loadAdmin(){
+  apiStore.adminUsers().then(function(rows){state.adminUsers=rows;render();}).catch(function(e){toast(e.message||'Не получилось загрузить гостей');});
+  apiStore.adminActivity(state.adminDate).then(function(rows){state.adminActivity=rows;render();}).catch(function(e){toast(e.message||'Не получилось загрузить события');});
+}
+
 /* ---------- Профиль ---------- */
 function profileView(){
   var mine=myPresence();
+
   var n=clamp(state.loyalty,0,LOYALTY_GOAL);
   var cups='';for(var i=0;i<LOYALTY_GOAL;i++){cups+='<div class="cup'+(i<n?' on':'')+(i===LOYALTY_GOAL-1&&n>=LOYALTY_GOAL?' last':'')+'">☕</div>';}
   var loyNote=n>=LOYALTY_GOAL?'<b>Следующая чашка — за счёт заведения!</b> Скажите бармену.':'До бесплатной чашки осталось <b>'+(LOYALTY_GOAL-n)+'</b>.';
@@ -531,6 +581,20 @@ function reroll(){
 function loyaltyPlus(){
   guard(apiStore.loyaltyPlus()).then(function(r){state.loyalty=r.loyalty;render();}).catch(function(){});
 }
+function adminLoyaltyPlus(id){
+  guard(apiStore.adminLoyaltyPlus(id)).then(function(r){
+    var u=state.adminUsers.filter(function(x){return x.id===id;})[0];
+    if(u)u.loyalty=r.loyalty;
+    render();toast('Чашка добавлена');
+  }).catch(function(){});
+}
+function adminChangeDay(delta){
+  var d=new Date(state.adminDate+'T00:00:00');
+  d.setDate(d.getDate()+delta);
+  var next=todayStr(d);
+  if(next>todayStr())return; // нельзя заглянуть в будущее
+  state.adminDate=next;render();loadAdmin();
+}
 
 /* ---------- События ---------- */
 document.addEventListener('submit',function(e){
@@ -542,7 +606,7 @@ document.addEventListener('click',function(e){
   var a=el.getAttribute('data-a'),id=el.getAttribute('data-id');
   if(a==='auth-mode'){state.authMode=el.getAttribute('data-mode');state.loginErr='';render();}
   else if(a==='do-auth'){doAuth();}
-  else if(a==='tab'){state.tab=id;render();}
+  else if(a==='tab'){state.tab=id;render();if(id==='admin'&&state.isAdmin)loadAdmin();}
   else if(a==='zone'){openSheet('zone',{id:id});}
   else if(a==='open-checkin'){openSheet('checkin',{zone:el.getAttribute('data-zone')||undefined});}
   else if(a==='open-invite'){openSheet('invite');}
@@ -562,6 +626,8 @@ document.addEventListener('click',function(e){
   }
   else if(a==='reroll'){reroll();}
   else if(a==='loyalty-plus'){loyaltyPlus();}
+  else if(a==='admin-loyalty-plus'){adminLoyaltyPlus(id);}
+  else if(a==='admin-day'){adminChangeDay(Number(el.getAttribute('data-d')));}
   else if(a==='logout'){logout();}
 });
 document.addEventListener('keydown',function(e){
@@ -596,7 +662,7 @@ function subscribe(){
 /* ---------- Запуск ---------- */
 function boot(){
   apiStore.me().then(function(acc){
-    state.uid=acc.id;state.username=acc.username;state.me={nick:acc.nick,emoji:acc.emoji};state.loyalty=Number(acc.loyalty)||0;
+    state.uid=acc.id;state.username=acc.username;state.me={nick:acc.nick,emoji:acc.emoji};state.loyalty=Number(acc.loyalty)||0;state.isAdmin=!!acc.is_admin;
     afterLogin();
   }).catch(function(){
     state.screen='login';render();

@@ -1,11 +1,12 @@
 import { sql } from '../../lib/db';
 import { getSession } from '../../lib/session';
 import { newId } from '../../lib/ids';
+import { logActivity } from '../../lib/activity';
 
 export default async function handler(req, res) {
-  var session = await getSession(req, res);
-
   try {
+    var session = await getSession(req, res);
+
     if (req.method === 'GET') {
       var rows = await sql`
         SELECT i.id, i.uid, i.text, i.date, i.time, i.created_at, a.nick, a.emoji
@@ -29,6 +30,7 @@ export default async function handler(req, res) {
       }
       var id = newId('i');
       await sql`INSERT INTO invites (id, uid, text, date, time, created_at) VALUES (${id}, ${session.uid}, ${text}, ${date}, ${time}, now())`;
+      await logActivity(session.uid, 'invite', text.slice(0, 80));
       return res.status(200).json({ id: id });
     }
 
@@ -42,6 +44,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (e) {
     console.error('invites error', e);
-    return res.status(500).json({ error: 'Что-то пошло не так' });
+    return res.status(500).json({ error: e.isSessionError ? e.message : 'Что-то пошло не так' });
   }
 }

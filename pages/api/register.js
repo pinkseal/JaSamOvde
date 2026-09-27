@@ -44,6 +44,6 @@ export default async function handler(req, res) {
     });
   } catch (e) {
     console.error('register error', e);
-    return res.status(500).json({ error: 'Не получилось создать кабинет. Попробуйте ещё раз.' });
+    return res.status(500).json({ error: e.isSessionError ? e.message : 'Не получилось создать кабинет. Попробуйте ещё раз.' });
   }
 }
