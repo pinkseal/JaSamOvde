@@ -8,11 +8,13 @@ export default async function handler(req, res) {
     var session = await getSession(req, res);
 
     if (req.method === 'GET') {
+      // Приглашения живут 2 часа с момента публикации — просроченные удаляем
+      // прямо здесь, при чтении списка (без отдельного фонового задания).
+      await sql`DELETE FROM invites WHERE created_at < now() - interval '2 hours'`;
       var rows = await sql`
         SELECT i.id, i.uid, i.text, i.date, i.time, i.created_at, a.nick, a.emoji
         FROM invites i JOIN accounts a ON a.id = i.uid
-        WHERE (i.date || ' ' || i.time)::timestamp > (now() - interval '24 hours')
-        ORDER BY (i.date || ' ' || i.time)::timestamp ASC
+        ORDER BY i.created_at DESC
       `;
       return res.status(200).json(rows);
     }

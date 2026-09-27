@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#F4F5F2; --card:#FFFFFF; --ink:#14201B; --muted:#5E6B65; --line:#DFE4E0;
+  --bg:#F4F5F2; --card:#FFFFFF; --ink:#14201B; --muted:#4B5851; --line:#DFE4E0;
   --mint:#6DB89E; --mint-deep:#3F8E76; --mint-tint:#E3F1EC; --on-mint:#0E1712;
   --coral:#C93A31; --zone:#EFF3F1; --zone-line:#D6DED9;
   --display:'Unbounded','Arial Black','Helvetica Neue',Arial,sans-serif;
@@ -68,7 +68,7 @@ h1,h2,h3,p{margin:0}
 .hero{background:var(--mint);color:var(--on-mint);border-radius:28px;padding:20px}
 .hero h1{font-family:var(--display);font-weight:700;font-size:22px;line-height:1.2;letter-spacing:-.02em}
 .hero p{margin-top:8px;font-size:15px;max-width:34ch}
-.hero .lbl{font-size:14px;font-weight:500}
+.hero .lbl{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;opacity:.85}
 .clock{font-family:var(--display);font-weight:700;font-size:44px;letter-spacing:-.03em;line-height:1.1;margin:4px 0 2px;font-variant-numeric:tabular-nums}
 .hero .where{font-size:15px;font-weight:500}
 .row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
@@ -84,7 +84,7 @@ h1,h2,h3,p{margin:0}
 .btn.big{width:100%;margin-top:16px;padding:16px 20px;font-size:18px;font-family:var(--display);font-weight:700}
 .btn[disabled]{opacity:.45;cursor:not-allowed}
 .card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:14px;margin-top:14px}
-.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:4px;font-size:13px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:4px;font-size:13.5px;font-weight:500;color:var(--ink)}
 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
 .hint{margin-top:12px;font-size:14px;color:var(--muted)}
 .sec{display:flex;align-items:center;justify-content:space-between;margin:8px 0 2px;gap:10px}
@@ -94,12 +94,13 @@ h1,h2,h3,p{margin:0}
 /* ---- Zone photo cards ---- */
 .zc{position:relative;display:block;width:100%;border-radius:22px;overflow:hidden;margin-top:14px;text-align:left}
 .zc img{display:block;width:100%;height:172px;object-fit:cover}
-.zc.mine{box-shadow:0 0 0 3px var(--coral) inset}
-.zc-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,16,13,0) 38%,rgba(10,16,13,.78) 100%)}
-.zc-info{position:absolute;left:14px;bottom:11px;color:#fff;right:78px}
-.zc-info b{font-family:var(--display);font-size:16.5px;letter-spacing:-.01em;display:block;line-height:1.2}
-.zc-info span{font-size:12.5px;opacity:.85}
+.zc.mine{box-shadow:0 0 0 3px var(--coral) inset,0 0 0 1px var(--coral)}
+.zc-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,16,13,0) 26%,rgba(10,16,13,.88) 100%)}
+.zc-info{position:absolute;left:14px;bottom:11px;color:#fff;right:78px;text-shadow:0 1px 4px rgba(0,0,0,.65)}
+.zc-info b{font-family:var(--display);font-size:17px;letter-spacing:-.01em;display:block;line-height:1.2}
+.zc-info span{font-size:13px;opacity:.95}
 .zc-count{position:absolute;top:10px;right:10px;background:var(--mint);color:var(--on-mint);font-weight:700;font-size:12px;border-radius:999px;padding:4px 10px}
+.zc-mine-badge{position:absolute;top:10px;left:10px;background:var(--coral);color:#fff;font-weight:700;font-size:12px;border-radius:999px;padding:4px 10px}
 .zc-avs{position:absolute;right:12px;bottom:12px;display:flex}
 .zc-avs .avl{width:26px;height:26px;font-size:14px;border:2px solid rgba(255,255,255,.9);margin-left:-8px;background:var(--card)}
 .zc-arrow{display:flex;justify-content:center;margin:-8px 0 0}
@@ -146,11 +147,11 @@ h1,h2,h3,p{margin:0}
 .loy-note b{color:var(--coral)}
 
 .tabs{display:flex;background:var(--card);border-top:1px solid var(--line)}
-.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px 10px;font-size:12px;font-weight:500;color:var(--muted);position:relative}
-.tabs .ic{width:52px;height:30px;border-radius:999px;display:grid;place-items:center}
+.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px 10px;font-size:12px;font-weight:600;color:var(--muted);position:relative}
+.tabs .ic{width:52px;height:30px;border-radius:999px;display:grid;place-items:center;transition:background .15s,color .15s}
 .tabs svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.tabs button[aria-current="page"]{color:var(--ink);font-weight:700}
-.tabs button[aria-current="page"] .ic{background:var(--mint);color:var(--on-mint)}
+.tabs button[aria-current="page"]{color:var(--ink);font-weight:800}
+.tabs button[aria-current="page"] .ic{background:var(--mint);color:var(--on-mint);box-shadow:0 2px 6px rgba(0,0,0,.12)}
 .badge{position:absolute;top:4px;left:calc(50% + 10px);min-width:18px;height:18px;border-radius:9px;background:var(--coral);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 5px}
 
 #sheet{position:fixed;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center}
@@ -201,18 +202,19 @@ var ZONE_BASEMENT='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHCA
 
 /* ---------- Настройки заведения ---------- */
 var ZONES=[
-  {id:'top',      name:'Гамаки наверху',           img:function(){return ZONE_TOP;}},
-  {id:'middle',   name:'Барная стойка и стол',     img:function(){return ZONE_MIDDLE;}},
-  {id:'basement', name:'Подвал',                   img:function(){return ZONE_BASEMENT;}}
+  {id:'top',      name:'Гамаки наверху',           img:function(){return state.settings.zone_img_top||ZONE_TOP;}},
+  {id:'middle',   name:'Барная стойка и стол',     img:function(){return state.settings.zone_img_middle||ZONE_MIDDLE;}},
+  {id:'basement', name:'Подвал',                   img:function(){return state.settings.zone_img_basement||ZONE_BASEMENT;}}
 ];
 var MOODS={
   open:   {label:'Открыт к знакомству', short:'Знакомлюсь',    color:'#6DB89E'},
   games:  {label:'Играю в настолки',    short:'Играю',         color:'#3F8E76'},
   company:{label:'Ищу компанию',        short:'Ищу компанию',  color:'#C93A31'},
-  quiet:  {label:'Просто чай',          short:'Просто чай',    color:'#93A19A'}
+  quiet:  {label:'Просто сижу',         short:'Просто сижу',   color:'#93A19A'}
 };
 var H=3600000;
-var LOYALTY_GOAL=8;
+var CUP_GOAL=10;
+var TEAPOT_GOAL=8;
 var MONTHS=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
 var POLL_MS=4000;
 
@@ -221,6 +223,69 @@ var ZB={}; ZONES.forEach(function(z){ZB[z.id]=z;});
 /* ---------- Утилиты ---------- */
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function pad(n){return n<10?'0'+n:''+n;}
+function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+
+/* ---------- Локализация (RU/SR) — общий текст интерфейса.
+   Названия этажей и настроений пока только на русском. */
+var STRINGS={
+  ru:{
+    tagline:'Я здесь', loginTag:'Личный кабинет Seal&Tea',
+    tabCafe:'Кафе', tabInvites:'Приглашения', tabProfile:'Профиль',
+    inHall:'В зале',
+    btnLogin:'Войти', btnRegister:'Создать кабинет', btnWorking:'Секунду…',
+    fieldLogin:'Логин', fieldPass:'Пароль',
+    loginPh:'Например, tea_lover', passPh:'Не меньше 4 символов',
+    loginNote:'Пароль защищён на сервере (bcrypt) и не виден даже нам.<br>Всё равно не используйте пароль, которым пользуетесь ещё где-то.',
+    heroTitle:'Вы сейчас в Seal&Tea?', heroDesc:'Отметьтесь на этаже, где сидите. Остальные увидят только ваш ник.',
+    btnHere:'Я здесь', btnChangeSpot:'Сменить место', btnLeave:'Уйти',
+    heroHereLbl:'Вы в Seal&Tea уже',
+    emptyHall:'Пока никого не отметили. Станьте первым, и остальные увидят, что в зале кто-то есть.',
+    here:'здесь', nobody:'пока никого', youHere:'Вы здесь',
+    invitesTitle:'Приглашения', btnInvite:'Позвать',
+    emptyInvitesTitle:'Пока тихо', emptyInvitesDesc:'Позовите гостей за свой стол — укажите время и пару слов о встрече.',
+    itsYou:'это вы', invitesYou:'зовёт в гости', btnDeleteInvite:'Удалить заявку',
+    commentPh:'Написать комментарий…', btnSend:'Отправить',
+    seenAs:'Так вас видят другие. Пароль и настоящее имя нигде не показываются.',
+    btnReroll:'Другой ник', btnLeaveMap:'Уйти с карты', btnLogout:'Выйти из кабинета',
+    yourCups:'Ваши чашки', yourPots:'Ваши чайники',
+    rulesTitle:'Правила зала',
+    rule1:'Не хотите разговоров? Выберите статус «Просто сижу», и вас не будут звать.',
+    rule2:'Знакомьтесь за столом, а не в личке: телефоны и соцсети здесь не обмениваются.',
+    rule3:'Чашки и чайники отмечает бариста — просто скажите ему.',
+    modeNote:'Кабинет, отметки, приглашения и комментарии хранятся на сервере и видны всем, кто открыл это приложение.',
+    hoursLbl:'Часы работы', btnMenu:'Меню кафе', announcementsTitle:'Объявления'
+  },
+  sr:{
+    tagline:'Ja sam ovde', loginTag:'Lični nalog Seal&Tea',
+    tabCafe:'Kafe', tabInvites:'Pozivi', tabProfile:'Profil',
+    inHall:'U sali',
+    btnLogin:'Prijava', btnRegister:'Napravi nalog', btnWorking:'Sekund…',
+    fieldLogin:'Korisničko ime', fieldPass:'Lozinka',
+    loginPh:'Na primer, tea_lover', passPh:'Najmanje 4 karaktera',
+    loginNote:'Lozinka je zaštićena na serveru (bcrypt) i nije vidljiva ni nama.<br>Ipak nemojte koristiti lozinku koju koristite negde drugde.',
+    heroTitle:'Da li ste sada u Seal&Tea?', heroDesc:'Označite sprat na kom sedite. Ostali će videti samo vaš nadimak.',
+    btnHere:'Ja sam ovde', btnChangeSpot:'Promeni mesto', btnLeave:'Idem',
+    heroHereLbl:'U Seal&Tea ste već',
+    emptyHall:'Još niko nije označen. Budite prvi, i ostali će videti da je neko u sali.',
+    here:'ovde', nobody:'trenutno niko', youHere:'Vi ste ovde',
+    invitesTitle:'Pozivi', btnInvite:'Pozovi',
+    emptyInvitesTitle:'Trenutno tiho', emptyInvitesDesc:'Pozovite goste za svoj sto — navedite vreme i par reči o susretu.',
+    itsYou:'to ste vi', invitesYou:'poziva u goste', btnDeleteInvite:'Obriši poziv',
+    commentPh:'Napišite komentar…', btnSend:'Pošalji',
+    seenAs:'Tako vas vide drugi. Lozinka i pravo ime se nigde ne prikazuju.',
+    btnReroll:'Drugi nadimak', btnLeaveMap:'Napusti mapu', btnLogout:'Odjavi se',
+    yourCups:'Vaše šoljice', yourPots:'Vaši čajnici',
+    rulesTitle:'Pravila sale',
+    rule1:'Ne želite razgovor? Izaberite status „Samo sedim" i nećemo vas zvati.',
+    rule2:'Upoznajte se za stolom, ne u porukama: telefoni i mreže se ovde ne razmenjuju.',
+    rule3:'Šoljice i čajnike beleži osoblje — samo im recite.',
+    modeNote:'Nalog, prijave, pozivi i komentari se čuvaju na serveru i vidljivi su svima koji su otvorili ovu aplikaciju.',
+    hoursLbl:'Radno vreme', btnMenu:'Meni kafea', announcementsTitle:'Objave'
+  }
+};
+function t(key){return (STRINGS[state.lang]&&STRINGS[state.lang][key])||STRINGS.ru[key]||key;}
+function setLang(l){state.lang=l;lsSet('yz_lang',l);render();}
 function fmtDur(ms){ms=Math.max(0,ms);var s=Math.floor(ms/1000);return Math.floor(s/3600)+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60);}
 function todayStr(d){d=d||new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
 function nowTimeStr(d){d=d||new Date();return pad(d.getHours())+':'+pad(d.getMinutes());}
@@ -268,12 +333,24 @@ var apiStore={
   addComment:function(inviteId,text){return api('/api/comments',{method:'POST',body:JSON.stringify({inviteId:inviteId,text:text})});},
   adminUsers:function(){return api('/api/admin/users');},
   adminLoyaltyPlus:function(id){return api('/api/admin/loyalty',{method:'POST',body:JSON.stringify({id:id})});},
-  adminActivity:function(date){return api('/api/admin/activity?date='+encodeURIComponent(date));}
+  adminActivity:function(date){return api('/api/admin/activity?date='+encodeURIComponent(date));},
+  settings:function(){return api('/api/settings');},
+  announcements:function(){return api('/api/announcements');},
+  adminSettings:function(){return api('/api/admin/settings');},
+  adminSetSettings:function(partial){return api('/api/admin/settings',{method:'PUT',body:JSON.stringify(partial)});},
+  adminAnnouncements:function(){return api('/api/admin/announcements');},
+  adminAddAnnouncement:function(title,body){return api('/api/admin/announcements',{method:'POST',body:JSON.stringify({title:title,body:body})});},
+  adminDeleteAnnouncement:function(id){return api('/api/admin/announcements?id='+encodeURIComponent(id),{method:'DELETE'});},
+  adminAddPresence:function(id,zone,mood){return api('/api/admin/presence',{method:'POST',body:JSON.stringify({id:id,zone:zone,mood:mood})});},
+  adminRemovePresence:function(id){return api('/api/admin/presence?id='+encodeURIComponent(id),{method:'DELETE'});},
+  adminSetPassword:function(id,password){return api('/api/admin/set-password',{method:'POST',body:JSON.stringify({id:id,password:password})});},
+  adminDrink:function(id,kind,delta){return api('/api/admin/drinks',{method:'POST',body:JSON.stringify({id:id,kind:kind,delta:delta})});},
+  adminDeleteUser:function(id){return api('/api/admin/users?id='+encodeURIComponent(id),{method:'DELETE'});}
 };
 
 /* ---------- Состояние ---------- */
 var $app=document.getElementById('app'),$sheet=document.getElementById('sheet'),$toast=document.getElementById('toast');
-var state={screen:'boot',tab:'cafe',authMode:'login',uid:null,username:null,me:null,loyalty:0,isAdmin:false,presence:[],invites:[],comments:[],adminUsers:[],adminActivity:[],adminDate:todayStr(),loginErr:'',loginBusy:false};
+var state={screen:'boot',tab:'cafe',authMode:'login',uid:null,username:null,me:null,loyalty:0,teapots:0,isAdmin:false,lang:(lsGet('yz_lang')||'ru'),presence:[],invites:[],comments:[],announcements:[],settings:{},adminUsers:[],adminActivity:[],adminDate:todayStr(),adminAnnouncements:[],menuOpen:false,loginErr:'',loginBusy:false};
 var sheet=null,lastFocus=null,raf=0,toastT=0,polls=[];
 
 function people(){var t=Date.now();return state.presence.filter(function(p){return ZB[p.zone]&&t-toMillis(p.at)<6*H;});}
@@ -297,15 +374,21 @@ function render(){
   var n=people().length,ni=activeInvites().length;
   var body=state.tab==='cafe'?cafeView():state.tab==='invites'?invitesView():state.tab==='admin'?adminView():profileView();
   $app.innerHTML=
-    '<header class="top"><div class="brand"><img src="'+LOGO_ICON+'" alt=""><div class="brand-txt"><span class="brand-t">Seal&amp;Tea</span><span class="brand-s">Я здесь</span></div></div>'+
-    '<div class="pill">В зале: '+n+'</div></header>'+
+    '<header class="top"><div class="brand"><img src="'+LOGO_ICON+'" alt=""><div class="brand-txt"><span class="brand-t">Seal&amp;Tea</span><span class="brand-s">'+t('tagline')+'</span></div></div>'+
+    '<div class="row" style="margin:0;gap:8px;align-items:center">'+langSwitch()+'<div class="pill">'+t('inHall')+': '+n+'</div></div></header>'+
     '<main class="scroll" id="main">'+body+'</main>'+
     '<nav class="tabs" aria-label="Разделы">'+
-      tab('cafe','Кафе',ICONS.cafe,0)+tab('invites','Приглашения',ICONS.inv,ni)+tab('me','Профиль',ICONS.me,0)+
+      tab('cafe',t('tabCafe'),ICONS.cafe,0)+tab('invites',t('tabInvites'),ICONS.inv,ni)+tab('me',t('tabProfile'),ICONS.me,0)+
       (state.isAdmin?tab('admin','Админ',ICONS.admin,0):'')+
     '</nav>';
   var m=document.getElementById('main');if(m)m.scrollTop=top;
   tick();
+}
+function langSwitch(){
+  return '<div class="row" style="margin:0;gap:4px">'+
+    '<button class="btn'+(state.lang==='ru'?' main':' line')+' small" style="padding:6px 10px;min-height:32px;font-size:12px" data-a="set-lang" data-lang="ru">RU</button>'+
+    '<button class="btn'+(state.lang==='sr'?' main':' line')+' small" style="padding:6px 10px;min-height:32px;font-size:12px" data-a="set-lang" data-lang="sr">SR</button>'+
+  '</div>';
 }
 function tab(id,label,icon,badge){
   return '<button data-a="tab" data-id="'+id+'"'+(state.tab===id?' aria-current="page"':'')+'><span class="ic">'+icon+'</span>'+label+
@@ -316,18 +399,19 @@ function tab(id,label,icon,badge){
 function loginView(){
   var isReg=state.authMode==='register';
   return '<div class="login"><div class="login-photo"><img src="'+ZONE_MIDDLE+'" alt=""></div>'+
-    '<div class="login-body"><img class="login-logo" src="'+LOGO_ICON+'" alt="Seal&amp;Tea">'+
-    '<div class="login-brand">Я здесь</div><p class="login-tag">Личный кабинет Seal&amp;Tea</p>'+
+    '<div class="login-body"><div style="position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:16px">'+langSwitch()+'</div>'+
+    '<img class="login-logo" src="'+LOGO_ICON+'" alt="Seal&amp;Tea">'+
+    '<div class="login-brand">'+t('tagline')+'</div><p class="login-tag">'+t('loginTag')+'</p>'+
     '<div class="row" style="justify-content:center;margin-top:16px">'+
-      '<button type="button" class="btn'+(isReg?' line':' main')+' small" data-a="auth-mode" data-mode="login">Войти</button>'+
-      '<button type="button" class="btn'+(isReg?' main':' line')+' small" data-a="auth-mode" data-mode="register">Создать кабинет</button>'+
+      '<button type="button" class="btn'+(isReg?' line':' main')+' small" data-a="auth-mode" data-mode="login">'+t('btnLogin')+'</button>'+
+      '<button type="button" class="btn'+(isReg?' main':' line')+' small" data-a="auth-mode" data-mode="register">'+t('btnRegister')+'</button>'+
     '</div>'+
     '<form class="login-form" id="loginForm" novalidate>'+
-      '<div class="lf"><label for="luser">Логин</label><input class="inp" id="luser" autocomplete="username" placeholder="Например, tea_lover" maxlength="40"></div>'+
-      '<div class="lf"><label for="lpass">Пароль</label><input class="inp" id="lpass" type="password" autocomplete="'+(isReg?'new-password':'current-password')+'" placeholder="Не меньше 4 символов" maxlength="80"></div>'+
+      '<div class="lf"><label for="luser">'+t('fieldLogin')+'</label><input class="inp" id="luser" autocomplete="username" placeholder="'+t('loginPh')+'" maxlength="40"></div>'+
+      '<div class="lf"><label for="lpass">'+t('fieldPass')+'</label><input class="inp" id="lpass" type="password" autocomplete="'+(isReg?'new-password':'current-password')+'" placeholder="'+t('passPh')+'" maxlength="80"></div>'+
       '<p class="login-err">'+esc(state.loginErr)+'</p>'+
-      '<button class="btn main big" type="submit" data-a="do-auth"'+(state.loginBusy?' disabled':'')+'>'+(state.loginBusy?'Секунду…':(isReg?'Создать кабинет':'Войти'))+'</button>'+
-      '<p class="login-note">Пароль защищён на сервере (bcrypt) и не виден даже нам.<br>Всё равно не используйте пароль, которым пользуетесь ещё где-то.</p>'+
+      '<button class="btn main big" type="submit" data-a="do-auth"'+(state.loginBusy?' disabled':'')+'>'+(state.loginBusy?t('btnWorking'):(isReg?t('btnRegister'):t('btnLogin')))+'</button>'+
+      '<p class="login-note">'+t('loginNote')+'</p>'+
     '</form></div></div>';
 }
 function doAuth(){
@@ -338,7 +422,7 @@ function doAuth(){
   state.loginErr='';state.loginBusy=true;render();
   var call=state.authMode==='register'?apiStore.register(u,p):apiStore.login(u,p);
   call.then(function(acc){
-    state.uid=acc.id;state.username=acc.username;state.me={nick:acc.nick,emoji:acc.emoji};state.loyalty=Number(acc.loyalty)||0;state.isAdmin=!!acc.is_admin;
+    state.uid=acc.id;state.username=acc.username;state.me={nick:acc.nick,emoji:acc.emoji};state.loyalty=Number(acc.loyalty)||0;state.teapots=Number(acc.teapots)||0;state.isAdmin=!!acc.is_admin;
     afterLogin();
   }).catch(function(e){
     state.loginBusy=false;
@@ -363,16 +447,16 @@ function cafeView(){
   var mine=myPresence(),hero;
   if(mine){
     var mz=ZB[mine.zone],mm=MOODS[mine.mood]||MOODS.quiet;
-    hero='<section class="hero"><div class="lbl">Вы в Seal&amp;Tea уже</div><div class="clock" id="timer">'+fmtDur(Date.now()-toMillis(mine.at))+'</div>'+
+    hero='<section class="hero"><div class="lbl">'+t('heroHereLbl')+'</div><div class="clock" id="timer">'+fmtDur(Date.now()-toMillis(mine.at))+'</div>'+
       '<div class="where">'+esc(mz.name)+' · '+esc(mm.short)+'</div>'+
-      '<div class="row"><button class="btn dark" data-a="open-checkin">Сменить место</button><button class="btn ghost" data-a="leave">Уйти</button></div></section>';
+      '<div class="row"><button class="btn dark" data-a="open-checkin">'+t('btnChangeSpot')+'</button><button class="btn ghost" data-a="leave">'+t('btnLeave')+'</button></div></section>';
   }else{
-    hero='<section class="hero"><h1>Вы сейчас в Seal&amp;Tea?</h1><p>Отметьтесь на этаже, где сидите. Остальные увидят только ваш ник.</p>'+
-      '<button class="btn dark big" data-a="open-checkin">Я здесь</button></section>';
+    hero='<section class="hero"><h1>'+t('heroTitle')+'</h1><p>'+t('heroDesc')+'</p>'+
+      '<button class="btn dark big" data-a="open-checkin">'+t('btnHere')+'</button></section>';
   }
   var list=people();
   var legend=Object.keys(MOODS).map(function(k){return '<span><i class="dot" style="background:'+MOODS[k].color+'"></i>'+esc(MOODS[k].label)+'</span>';}).join('');
-  var hint=list.length?'':'<p class="hint">Пока никого не отметили. Станьте первым, и остальные увидят, что в зале кто-то есть.</p>';
+  var hint=list.length?'':'<p class="hint">'+t('emptyHall')+'</p>';
   var cards=ZONES.map(function(z,idx){
     var here=list.filter(function(p){return p.zone===z.id;});
     var isMine=mine&&mine.zone===z.id;
@@ -381,20 +465,28 @@ function cafeView(){
     return arrow+'<button class="zc'+(isMine?' mine':'')+'" data-a="zone" data-id="'+z.id+'" aria-label="'+esc(z.name)+', человек: '+here.length+'">'+
       '<img src="'+z.img()+'" alt="'+esc(z.name)+'">'+
       '<div class="zc-grad"></div>'+
+      (isMine?'<div class="zc-mine-badge">'+esc(t('youHere'))+'</div>':'')+
       (here.length?'<div class="zc-count">'+here.length+'</div>':'')+
-      '<div class="zc-info"><b>'+esc(z.name)+'</b><span>'+(here.length?here.length+' здесь':'пока никого')+'</span></div>'+
+      '<div class="zc-info"><b>'+esc(z.name)+'</b><span>'+(here.length?here.length+' '+t('here'):t('nobody'))+'</span></div>'+
       (avs?'<div class="zc-avs">'+avs+'</div>':'')+
     '</button>';
   }).join('');
-  return hero+'<div style="margin-top:2px">'+cards+'</div><div class="legend" style="margin-top:14px">'+legend+'</div>'+hint;
+  var hours=state.settings.hours?'<div class="hint" style="margin:0">'+t('hoursLbl')+': <b style="color:var(--ink)">'+esc(state.settings.hours)+'</b></div>':'';
+  var menuBtn=state.settings.menu_image?'<button class="btn line small" data-a="open-menu">'+t('btnMenu')+'</button>':'';
+  var infoRow=(hours||menuBtn)?'<div class="sec" style="align-items:center">'+hours+menuBtn+'</div>':'';
+  var ann=state.announcements||[];
+  var annHtml=ann.length?'<div class="card"><h2 style="font-family:var(--display);font-size:18px;letter-spacing:-.02em;margin-bottom:2px">'+t('announcementsTitle')+'</h2>'+
+    ann.map(function(a){return '<div class="person" style="align-items:flex-start"><div style="flex:1"><b>'+esc(a.title)+'</b><span class="m" style="display:block;margin-top:2px">'+esc(a.body)+'</span></div></div>';}).join('')+
+  '</div>':'';
+  return hero+infoRow+annHtml+'<div style="margin-top:2px">'+cards+'</div><div class="legend" style="margin-top:14px">'+legend+'</div>'+hint;
 }
 
 /* ---------- Приглашения ---------- */
 function invitesView(){
   var list=activeInvites();
-  var head='<div class="sec"><h2>Приглашения</h2><button class="btn main" data-a="open-invite">Позвать</button></div>';
+  var head='<div class="sec"><h2>'+t('invitesTitle')+'</h2><button class="btn main" data-a="open-invite">'+t('btnInvite')+'</button></div>';
   if(!list.length){
-    return head+'<div class="empty"><h3>Пока тихо</h3><p>Позовите гостей за свой стол — укажите время и пару слов о встрече.</p></div>';
+    return head+'<div class="empty"><h3>'+t('emptyInvitesTitle')+'</h3><p>'+t('emptyInvitesDesc')+'</p></div>';
   }
   return head+list.map(function(i){
     var cs=commentsOf(i.id),iAm=i.uid===state.uid;
@@ -404,13 +496,13 @@ function invitesView(){
     }).join('');
     return '<article class="req">'+
       '<div class="req-top"><span class="avl">'+esc(String(i.emoji||'🙂').slice(0,4))+'</span>'+
-      '<div class="who"><b>'+esc(i.nick)+'</b><span>'+(iAm?'это вы':'зовёт в гости')+'</span></div>'+
+      '<div class="who"><b>'+esc(i.nick)+'</b><span>'+(iAm?t('itsYou'):t('invitesYou'))+'</span></div>'+
       '<div class="req-when">'+esc(fmtWhen(i.date,i.time))+'</div></div>'+
       '<p class="req-text">'+esc(i.text)+'</p>'+
-      (iAm?'<button class="btn danger" data-a="close-invite" data-id="'+esc(i.id)+'">Удалить заявку</button>':'')+
+      (iAm?'<button class="btn danger" data-a="close-invite" data-id="'+esc(i.id)+'">'+t('btnDeleteInvite')+'</button>':'')+
       '<div class="cbox">'+cmts+
-      '<div class="cform"><input class="inp" type="text" maxlength="140" placeholder="Написать комментарий…" data-cid="'+esc(i.id)+'" aria-label="Комментарий">'+
-      '<button data-a="send-comment" data-id="'+esc(i.id)+'">Отправить</button></div></div>'+
+      '<div class="cform"><input class="inp" type="text" maxlength="140" placeholder="'+t('commentPh')+'" data-cid="'+esc(i.id)+'" aria-label="Комментарий">'+
+      '<button data-a="send-comment" data-id="'+esc(i.id)+'">'+t('btnSend')+'</button></div></div>'+
     '</article>';
   }).join('');
 }
@@ -433,51 +525,119 @@ function actLabel(row){
 function adminView(){
   var users=state.adminUsers.slice().sort(function(a,b){return a.username<b.username?-1:1;});
   var usersHtml=users.length?users.map(function(u){
-    return '<div class="person"><span class="avl">'+esc(String(u.emoji||'🙂').slice(0,4))+'</span>'+
-      '<div style="flex:1"><b>'+esc(u.nick)+'</b><span class="m">'+esc(u.username)+' · '+u.loyalty+' / 8'+(u.is_admin?' · админ':'')+'</span></div>'+
-      '<button class="btn main small" data-a="admin-loyalty-plus" data-id="'+esc(u.id)+'">+1 чашка</button></div>';
+    return '<div class="person" style="align-items:flex-start;flex-wrap:wrap;gap:8px 12px">'+
+      '<span class="avl">'+esc(String(u.emoji||'🙂').slice(0,4))+'</span>'+
+      '<div style="flex:1;min-width:140px"><b>'+esc(u.nick)+'</b><span class="m">'+esc(u.username)+(u.is_admin?' · админ':'')+'</span></div>'+
+      '<div class="row" style="margin:0;gap:6px;align-items:center">'+
+        '<button class="btn line small" data-a="admin-drink" data-id="'+esc(u.id)+'" data-kind="loyalty" data-d="-1">−</button>'+
+        '<span style="min-width:52px;text-align:center">☕ '+u.loyalty+'/10</span>'+
+        '<button class="btn main small" data-a="admin-drink" data-id="'+esc(u.id)+'" data-kind="loyalty" data-d="1">+</button>'+
+      '</div>'+
+      '<div class="row" style="margin:0;gap:6px;align-items:center">'+
+        '<button class="btn line small" data-a="admin-drink" data-id="'+esc(u.id)+'" data-kind="teapots" data-d="-1">−</button>'+
+        '<span style="min-width:52px;text-align:center">🫖 '+u.teapots+'/8</span>'+
+        '<button class="btn main small" data-a="admin-drink" data-id="'+esc(u.id)+'" data-kind="teapots" data-d="1">+</button>'+
+      '</div>'+
+      '<div class="row" style="margin:0;gap:6px">'+
+        '<button class="btn line small" data-a="admin-open-password" data-id="'+esc(u.id)+'">Пароль</button>'+
+        (u.id===state.uid?'':'<button class="btn danger" style="padding:9px 15px;min-height:38px;font-size:14px" data-a="admin-delete-user" data-id="'+esc(u.id)+'">Удалить</button>')+
+      '</div>'+
+    '</div>';
   }).join(''):'<p class="hint">Пока никто не зарегистрировался.</p>';
+
+  var present=people();
+  var mapHtml=present.length?present.map(function(p){
+    var z=ZB[p.zone];
+    return '<div class="person"><span class="avl">'+esc(String(p.emoji||'🙂').slice(0,4))+'</span>'+
+      '<div style="flex:1"><b>'+esc(p.nick)+'</b><span class="m">'+esc(z?z.name:p.zone)+'</span></div>'+
+      '<button class="btn danger" style="padding:9px 15px;min-height:38px;font-size:14px" data-a="admin-remove-presence" data-id="'+esc(p.id)+'">Убрать</button></div>';
+  }).join(''):'<p class="hint">Сейчас никого нет на карте.</p>';
+  var userOptions=users.map(function(u){return '<option value="'+esc(u.id)+'">'+esc(u.nick)+' ('+esc(u.username)+')</option>';}).join('');
 
   var acts=state.adminActivity;
   var actsHtml=acts.length?acts.map(function(r){
     return '<div class="person"><span class="avl">'+esc(String(r.emoji||'🙂').slice(0,4))+'</span>'+
       '<div style="flex:1"><b>'+fmtActTime(toMillis(r.at))+'</b><span class="m">'+actLabel(r)+'</span></div></div>';
   }).join(''):'<p class="hint">За этот день событий не было.</p>';
-
   var isToday=state.adminDate===todayStr();
+
+  var anns=state.adminAnnouncements||[];
+  var annHtml=anns.length?anns.map(function(a){
+    return '<div class="person" style="align-items:flex-start"><div style="flex:1"><b>'+esc(a.title)+'</b><span class="m" style="display:block">'+esc(a.body)+'</span></div>'+
+      '<button class="btn danger" style="padding:9px 15px;min-height:38px;font-size:14px" data-a="admin-delete-ann" data-id="'+esc(a.id)+'">Убрать</button></div>';
+  }).join(''):'<p class="hint">Объявлений пока нет.</p>';
+
+  var s=state.settings||{};
   return '<div class="sec"><h2>Гости</h2></div><div class="card">'+usersHtml+'</div>'+
+
+    '<div class="sec" style="margin-top:22px"><h2>Карта</h2></div><div class="card">'+mapHtml+
+    '<div class="fl">Добавить на карту</div>'+
+    '<select class="inp" id="adm-user-sel" style="margin-bottom:8px">'+userOptions+'</select>'+
+    '<div class="two"><select class="inp" id="adm-zone-sel">'+zoneItems().map(function(z){return '<option value="'+z[0]+'">'+z[1]+'</option>';}).join('')+'</select>'+
+    '<select class="inp" id="adm-mood-sel">'+moodItemsPlain().map(function(m){return '<option value="'+m[0]+'">'+m[1]+'</option>';}).join('')+'</select></div>'+
+    '<button class="btn main big" data-a="admin-add-presence">Добавить</button></div>'+
+
+    '<div class="sec" style="margin-top:22px"><h2>Объявления</h2></div><div class="card">'+annHtml+
+    '<div class="fl">Новое объявление</div>'+
+    '<input class="inp" id="adm-ann-title" maxlength="100" placeholder="Заголовок" style="margin-bottom:8px">'+
+    '<textarea class="tarea" id="adm-ann-body" maxlength="600" placeholder="Текст"></textarea>'+
+    '<button class="btn main big" data-a="admin-add-ann">Опубликовать</button></div>'+
+
+    '<div class="sec" style="margin-top:22px"><h2>Настройки заведения</h2></div><div class="card">'+
+    '<div class="fl">Часы работы</div>'+
+    '<input class="inp" id="adm-hours" maxlength="80" value="'+esc(s.hours||'')+'" placeholder="Например: Пн–Вс 10:00–22:00" style="margin-bottom:8px">'+
+    '<button class="btn main" data-a="admin-save-hours">Сохранить часы</button>'+
+    '<div class="fl">Меню кафе (картинка)</div>'+
+    (s.menu_image?'<p class="hint" style="margin-top:0">Меню загружено.</p>':'<p class="hint" style="margin-top:0">Меню ещё не загружено.</p>')+
+    '<input type="file" accept="image/*" id="adm-menu-file" style="margin-bottom:8px">'+
+    '<button class="btn main" data-a="admin-save-menu">Загрузить меню</button>'+
+    '<div class="fl">Фото этажей</div>'+
+    '<div class="hint" style="margin-top:0">Гамаки наверху</div><input type="file" accept="image/*" id="adm-img-top" style="margin-bottom:8px">'+
+    '<div class="hint" style="margin-top:0">Барная стойка и стол</div><input type="file" accept="image/*" id="adm-img-middle" style="margin-bottom:8px">'+
+    '<div class="hint" style="margin-top:0">Подвал</div><input type="file" accept="image/*" id="adm-img-basement" style="margin-bottom:8px">'+
+    '<button class="btn main" data-a="admin-save-images">Сохранить фото</button></div>'+
+
     '<div class="sec" style="margin-top:22px"><h2>События'+(isToday?' сегодня':'')+'</h2>'+
     '<div class="row" style="margin-top:0"><button class="btn line small" data-a="admin-day" data-d="-1">← День назад</button>'+
     (isToday?'':'<button class="btn line small" data-a="admin-day" data-d="1">Вперёд →</button>')+'</div></div>'+
     '<p class="hint" style="margin-top:0">'+esc(fmtDateOnly(state.adminDate))+'</p>'+
     '<div class="card">'+actsHtml+'</div>';
 }
+function moodItemsPlain(){return Object.keys(MOODS).map(function(k){return [k,MOODS[k].label];});}
 function loadAdmin(){
   apiStore.adminUsers().then(function(rows){state.adminUsers=rows;render();}).catch(function(e){toast(e.message||'Не получилось загрузить гостей');});
   apiStore.adminActivity(state.adminDate).then(function(rows){state.adminActivity=rows;render();}).catch(function(e){toast(e.message||'Не получилось загрузить события');});
+  apiStore.adminAnnouncements().then(function(rows){state.adminAnnouncements=rows;render();}).catch(function(){});
+  apiStore.adminSettings().then(function(s){state.settings=s||{};render();}).catch(function(){});
 }
 
 /* ---------- Профиль ---------- */
 function profileView(){
   var mine=myPresence();
 
-  var n=clamp(state.loyalty,0,LOYALTY_GOAL);
-  var cups='';for(var i=0;i<LOYALTY_GOAL;i++){cups+='<div class="cup'+(i<n?' on':'')+(i===LOYALTY_GOAL-1&&n>=LOYALTY_GOAL?' last':'')+'">☕</div>';}
-  var loyNote=n>=LOYALTY_GOAL?'<b>Следующая чашка — за счёт заведения!</b> Скажите бармену.':'До бесплатной чашки осталось <b>'+(LOYALTY_GOAL-n)+'</b>.';
+  var n=clamp(state.loyalty,0,CUP_GOAL);
+  var cups='';for(var i=0;i<CUP_GOAL;i++){cups+='<div class="cup'+(i<n?' on':'')+(i===CUP_GOAL-1&&n>=CUP_GOAL?' last':'')+'">☕</div>';}
+  var cupNote=n>=CUP_GOAL?'<b>Следующая чашка — за счёт заведения!</b> Скажите бармену.':'До бесплатной чашки осталось <b>'+(CUP_GOAL-n)+'</b>.';
+
+  var tp=clamp(state.teapots,0,TEAPOT_GOAL);
+  var pots='';for(var i=0;i<TEAPOT_GOAL;i++){pots+='<div class="cup'+(i<tp?' on':'')+(i===TEAPOT_GOAL-1&&tp>=TEAPOT_GOAL?' last':'')+'">🫖</div>';}
+  var potNote=tp>=TEAPOT_GOAL?'<b>Следующий чайник — за счёт заведения!</b> Скажите бармену.':'До бесплатного чайника осталось <b>'+(TEAPOT_GOAL-tp)+'</b>.';
+
   return '<div class="card me-card"><div class="big-av">'+esc(state.me.emoji)+'</div><h2>'+esc(state.me.nick)+'</h2>'+
     '<div class="uname">Кабинет: '+esc(state.username||'')+'</div>'+
-    '<p>Так вас видят другие. Пароль и настоящее имя нигде не показываются.</p>'+
-    '<div class="row" style="justify-content:center"><button class="btn main" data-a="reroll">Другой ник</button>'+
-    (mine?'<button class="btn line" data-a="leave">Уйти с карты</button>':'')+'</div>'+
-    '<button class="btn danger" style="margin-top:10px" data-a="logout">Выйти из кабинета</button></div>'+
-    '<div class="card"><div class="loy-head"><h2>Ваши визиты</h2><span class="loy-count">'+n+' / '+LOYALTY_GOAL+'</span></div>'+
-    '<div class="cups">'+cups+'</div><p class="loy-note">'+loyNote+'</p>'+
-    '<button class="btn main small" data-a="loyalty-plus" style="margin-top:12px">+1 чашка</button></div>'+
-    '<div class="card"><h2 style="font-family:var(--display);font-size:18px;letter-spacing:-.02em">Правила зала</h2><ul class="rules">'+
-    '<li>Не хотите разговоров? Выберите статус «Просто чай», и вас не будут звать.</li>'+
-    '<li>Знакомьтесь за столом, а не в личке: телефоны и соцсети здесь не обмениваются.</li>'+
-    '<li>Если что-то не так, скажите бармену. Он поможет.</li></ul>'+
-    '<p class="mode">Кабинет, отметки, приглашения и комментарии хранятся на сервере и видны всем, кто открыл это приложение.</p></div>';
+    '<p>'+t('seenAs')+'</p>'+
+    '<div class="row" style="justify-content:center"><button class="btn main" data-a="reroll">'+t('btnReroll')+'</button>'+
+    (mine?'<button class="btn line" data-a="leave">'+t('btnLeaveMap')+'</button>':'')+'</div>'+
+    '<button class="btn danger" style="margin-top:10px" data-a="logout">'+t('btnLogout')+'</button></div>'+
+    '<div class="card"><div class="loy-head"><h2>'+t('yourCups')+'</h2><span class="loy-count">'+n+' / '+CUP_GOAL+'</span></div>'+
+    '<div class="cups">'+cups+'</div><p class="loy-note">'+cupNote+'</p></div>'+
+    '<div class="card"><div class="loy-head"><h2>'+t('yourPots')+'</h2><span class="loy-count">'+tp+' / '+TEAPOT_GOAL+'</span></div>'+
+    '<div class="cups">'+pots+'</div><p class="loy-note">'+potNote+'</p></div>'+
+    '<div class="card"><h2 style="font-family:var(--display);font-size:18px;letter-spacing:-.02em">'+t('rulesTitle')+'</h2><ul class="rules">'+
+    '<li>'+t('rule1')+'</li>'+
+    '<li>'+t('rule2')+'</li>'+
+    '<li>'+t('rule3')+'</li></ul>'+
+    '<p class="mode">'+t('modeNote')+'</p></div>';
 }
 
 /* ---------- Нижние листы ---------- */
@@ -493,7 +653,7 @@ function openSheet(kind,opts){
   var mine=myPresence();
   lastFocus=document.activeElement;
   opts=opts||{};
-  sheet={kind:kind,id:opts.id,f:{}};
+  sheet={kind:kind,id:opts.id,nick:opts.nick,f:{}};
   if(kind==='checkin'){sheet.f={zone:opts.zone||(mine&&mine.zone)||'top',mood:(mine&&mine.mood)||'open'};}
   if(kind==='invite'){var now=new Date();sheet.f={date:todayStr(now),time:nowTimeStr(now)};}
   renderSheet(true);
@@ -530,6 +690,16 @@ function renderSheet(anim){
       '<div><label for="idate" style="font-size:13px;color:var(--muted)">Дата</label><input class="inp" id="idate" type="date" value="'+esc(sheet.f.date)+'"></div>'+
       '<div><label for="itime" style="font-size:13px;color:var(--muted)">Время</label><input class="inp" id="itime" type="time" value="'+esc(sheet.f.time)+'"></div></div>'+
       '<button class="btn main big" data-a="do-invite">Опубликовать</button>';
+  }else if(sheet.kind==='admin-password'){
+    title='Новый пароль';
+    inner='<h2>Новый пароль</h2><p class="lead">Для гостя: '+esc(sheet.nick||'')+'</p>'+
+      '<div class="fl"><label for="adm-newpass">Пароль</label></div>'+
+      '<input class="inp" id="adm-newpass" type="text" maxlength="80" placeholder="Не меньше 4 символов">'+
+      '<button class="btn main big" data-a="admin-do-password">Сохранить пароль</button>';
+  }else if(sheet.kind==='menu'){
+    title='Меню';
+    inner='<h2>Меню Seal&amp;Tea</h2>'+
+      (state.settings.menu_image?'<img src="'+state.settings.menu_image+'" alt="Меню" style="width:100%;border-radius:16px;margin-top:12px">':'<p class="lead">Меню пока не загружено.</p>');
   }
   $sheet.hidden=false;
   $sheet.innerHTML='<div class="scrim" data-a="close"></div><div class="panel'+(anim?' enter':'')+'" role="dialog" aria-modal="true" aria-label="'+esc(title)+'" tabindex="-1"><div class="grab"></div>'+inner+'</div>';
@@ -549,6 +719,8 @@ function guard(promise,okMsg){
 function refreshPresence(){return apiStore.presenceList().then(function(rows){state.presence=rows;schedule();});}
 function refreshInvites(){return apiStore.invitesList().then(function(rows){state.invites=rows;schedule();});}
 function refreshComments(){return apiStore.commentsList().then(function(rows){state.comments=rows;schedule();});}
+function refreshSettings(){return apiStore.settings().then(function(s){state.settings=s||{};schedule();}).catch(function(){});}
+function refreshAnnouncements(){return apiStore.announcements().then(function(rows){state.announcements=rows;schedule();}).catch(function(){});}
 
 function doCheckin(){
   var f=sheet.f;
@@ -578,15 +750,87 @@ function reroll(){
     if(myPresence())refreshPresence();
   }).catch(function(){});
 }
-function loyaltyPlus(){
-  guard(apiStore.loyaltyPlus()).then(function(r){state.loyalty=r.loyalty;render();}).catch(function(){});
-}
-function adminLoyaltyPlus(id){
-  guard(apiStore.adminLoyaltyPlus(id)).then(function(r){
+function adminDrink(id,kind,delta){
+  guard(apiStore.adminDrink(id,kind,delta)).then(function(r){
     var u=state.adminUsers.filter(function(x){return x.id===id;})[0];
-    if(u)u.loyalty=r.loyalty;
-    render();toast('Чашка добавлена');
+    if(u)u[kind]=r.value;
+    render();
   }).catch(function(){});
+}
+function adminOpenPassword(id){
+  var u=state.adminUsers.filter(function(x){return x.id===id;})[0];
+  openSheet('admin-password',{id:id,nick:u?u.nick:id});
+}
+function adminSetPasswordDo(){
+  var pass=(document.getElementById('adm-newpass')||{}).value||'';
+  if(pass.length<4){toast('Пароль — минимум 4 символа');return;}
+  guard(apiStore.adminSetPassword(sheet.id,pass)).then(function(){closeSheet();toast('Пароль обновлён');}).catch(function(){});
+}
+function adminDeleteUser(id){
+  if(!window.confirm('Удалить этот аккаунт насовсем? Действие необратимо.'))return;
+  guard(apiStore.adminDeleteUser(id)).then(function(){
+    state.adminUsers=state.adminUsers.filter(function(x){return x.id!==id;});
+    render();toast('Аккаунт удалён');
+  }).catch(function(){});
+}
+function adminRemovePresence(id){
+  guard(apiStore.adminRemovePresence(id)).then(function(){refreshPresence();toast('Убрано с карты');}).catch(function(){});
+}
+function adminAddPresence(){
+  var id=(document.getElementById('adm-user-sel')||{}).value;
+  var zone=(document.getElementById('adm-zone-sel')||{}).value;
+  var mood=(document.getElementById('adm-mood-sel')||{}).value;
+  if(!id){toast('Выберите гостя');return;}
+  guard(apiStore.adminAddPresence(id,zone,mood)).then(function(){refreshPresence();toast('Добавлено на карту');}).catch(function(){});
+}
+function adminAddAnn(){
+  var title=(document.getElementById('adm-ann-title')||{}).value||'';
+  var body=(document.getElementById('adm-ann-body')||{}).value||'';
+  if(!title.trim()||!body.trim()){toast('Заполните заголовок и текст');return;}
+  guard(apiStore.adminAddAnnouncement(title.trim(),body.trim())).then(function(){
+    document.getElementById('adm-ann-title').value='';document.getElementById('adm-ann-body').value='';
+    apiStore.adminAnnouncements().then(function(rows){state.adminAnnouncements=rows;render();});
+    refreshAnnouncements();toast('Объявление опубликовано');
+  }).catch(function(){});
+}
+function adminDeleteAnn(id){
+  guard(apiStore.adminDeleteAnnouncement(id)).then(function(){
+    state.adminAnnouncements=state.adminAnnouncements.filter(function(x){return x.id!==id;});
+    render();refreshAnnouncements();
+  }).catch(function(){});
+}
+function adminSaveHours(){
+  var hours=(document.getElementById('adm-hours')||{}).value||'';
+  guard(apiStore.adminSetSettings({hours:hours})).then(function(s){state.settings=s;render();refreshSettings();toast('Часы сохранены');}).catch(function(){});
+}
+function fileToDataUrl(file){
+  return new Promise(function(resolve,reject){
+    var reader=new FileReader();
+    reader.onload=function(){resolve(reader.result);};
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+function adminSaveMenu(){
+  var input=document.getElementById('adm-menu-file');
+  var file=input&&input.files&&input.files[0];
+  if(!file){toast('Выберите файл');return;}
+  fileToDataUrl(file).then(function(url){
+    return guard(apiStore.adminSetSettings({menu_image:url}));
+  }).then(function(s){if(s){state.settings=s;render();refreshSettings();toast('Меню сохранено');}}).catch(function(){toast('Не получилось сохранить меню');});
+}
+function adminSaveImages(){
+  var ids={top:'adm-img-top',middle:'adm-img-middle',basement:'adm-img-basement'};
+  var jobs=[],partial={};
+  Object.keys(ids).forEach(function(z){
+    var input=document.getElementById(ids[z]);
+    var file=input&&input.files&&input.files[0];
+    if(file)jobs.push(fileToDataUrl(file).then(function(url){partial['zone_img_'+z]=url;}));
+  });
+  if(!jobs.length){toast('Выберите хотя бы один файл');return;}
+  Promise.all(jobs).then(function(){
+    return guard(apiStore.adminSetSettings(partial));
+  }).then(function(s){if(s){state.settings=s;render();refreshSettings();toast('Фото сохранены');}}).catch(function(){toast('Не получилось сохранить фото');});
 }
 function adminChangeDay(delta){
   var d=new Date(state.adminDate+'T00:00:00');
@@ -625,10 +869,21 @@ document.addEventListener('click',function(e){
     if(input){sendComment(id,input.value);input.value='';}
   }
   else if(a==='reroll'){reroll();}
-  else if(a==='loyalty-plus'){loyaltyPlus();}
-  else if(a==='admin-loyalty-plus'){adminLoyaltyPlus(id);}
+  else if(a==='admin-drink'){adminDrink(id,el.getAttribute('data-kind'),Number(el.getAttribute('data-d')));}
+  else if(a==='admin-open-password'){adminOpenPassword(id);}
+  else if(a==='admin-do-password'&&sheet){adminSetPasswordDo();}
+  else if(a==='admin-delete-user'){adminDeleteUser(id);}
+  else if(a==='admin-remove-presence'){adminRemovePresence(id);}
+  else if(a==='admin-add-presence'){adminAddPresence();}
+  else if(a==='admin-add-ann'){adminAddAnn();}
+  else if(a==='admin-delete-ann'){adminDeleteAnn(id);}
+  else if(a==='admin-save-hours'){adminSaveHours();}
+  else if(a==='admin-save-menu'){adminSaveMenu();}
+  else if(a==='admin-save-images'){adminSaveImages();}
   else if(a==='admin-day'){adminChangeDay(Number(el.getAttribute('data-d')));}
+  else if(a==='open-menu'){openSheet('menu');}
   else if(a==='logout'){logout();}
+  else if(a==='set-lang'){setLang(el.getAttribute('data-lang'));}
 });
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape'&&sheet){closeSheet();return;}
@@ -650,19 +905,21 @@ function schedule(){
 
 /* ---------- Опрос сервера (простая замена realtime) ---------- */
 function subscribe(){
-  refreshPresence();refreshInvites();refreshComments();
+  refreshPresence();refreshInvites();refreshComments();refreshSettings();refreshAnnouncements();
   polls.push(setInterval(refreshPresence,POLL_MS));
   polls.push(setInterval(refreshInvites,POLL_MS));
   polls.push(setInterval(refreshComments,POLL_MS));
+  polls.push(setInterval(refreshSettings,POLL_MS*3));
+  polls.push(setInterval(refreshAnnouncements,POLL_MS*3));
   document.addEventListener('visibilitychange',function(){
-    if(document.visibilityState==='visible'&&state.screen==='app'){refreshPresence();refreshInvites();refreshComments();}
+    if(document.visibilityState==='visible'&&state.screen==='app'){refreshPresence();refreshInvites();refreshComments();refreshSettings();refreshAnnouncements();}
   });
 }
 
 /* ---------- Запуск ---------- */
 function boot(){
   apiStore.me().then(function(acc){
-    state.uid=acc.id;state.username=acc.username;state.me={nick:acc.nick,emoji:acc.emoji};state.loyalty=Number(acc.loyalty)||0;state.isAdmin=!!acc.is_admin;
+    state.uid=acc.id;state.username=acc.username;state.me={nick:acc.nick,emoji:acc.emoji};state.loyalty=Number(acc.loyalty)||0;state.teapots=Number(acc.teapots)||0;state.isAdmin=!!acc.is_admin;
     afterLogin();
   }).catch(function(){
     state.screen='login';render();
