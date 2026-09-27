@@ -1,6 +1,8 @@
 -- Запустите этот файл один раз в Query-вкладке вашей базы данных
 -- (Vercel → Storage → ваша база, или сразу в Neon → Query), КАЖДУЮ команду отдельно —
 -- некоторые SQL-консоли (в т.ч. Neon) не разрешают выполнять несколько команд за раз.
+-- Это полная схема для НОВОЙ базы. Если база уже существует — используйте migrate_admin.sql
+-- и migrate_v2.sql вместо этого файла.
 
 CREATE TABLE IF NOT EXISTS accounts (
   id          text PRIMARY KEY,          -- нормализованный логин (латиница/цифры/._-)
@@ -8,7 +10,8 @@ CREATE TABLE IF NOT EXISTS accounts (
   pass_hash   text NOT NULL,             -- bcrypt-хеш пароля
   nick        text NOT NULL,             -- анонимный ник, который видят другие
   emoji       text NOT NULL,             -- аватар-эмодзи
-  loyalty     integer NOT NULL DEFAULT 0,
+  loyalty     integer NOT NULL DEFAULT 0, -- счётчик чашек (бесплатная каждая 10-я)
+  teapots     integer NOT NULL DEFAULT 0, -- счётчик чайников (бесплатный каждый 8-й)
   is_admin    boolean NOT NULL DEFAULT false,
   created_at  timestamptz NOT NULL DEFAULT now()
 );
@@ -48,3 +51,15 @@ CREATE TABLE IF NOT EXISTS activity (
 );
 
 CREATE INDEX IF NOT EXISTS activity_at_idx ON activity (at);
+
+CREATE TABLE IF NOT EXISTS settings (
+  key   text PRIMARY KEY,               -- 'hours' | 'menu_image' | 'zone_img_top' | 'zone_img_middle' | 'zone_img_basement'
+  value text
+);
+
+CREATE TABLE IF NOT EXISTS announcements (
+  id          text PRIMARY KEY,
+  title       text NOT NULL,
+  body        text NOT NULL,
+  created_at  timestamptz NOT NULL DEFAULT now()
+);
