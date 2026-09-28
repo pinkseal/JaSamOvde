@@ -1,0 +1,1167 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Я здесь · Seal&amp;Tea</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F5F2; --card:#FFFFFF; --ink:#14201B; --muted:#4B5851; --line:#DFE4E0;
+  --mint:#6DB89E; --mint-deep:#3F8E76; --mint-tint:#E3F1EC; --on-mint:#0E1712;
+  --coral:#C93A31; --zone:#EFF3F1; --zone-line:#D6DED9;
+  --display:'Unbounded','Arial Black','Helvetica Neue',Arial,sans-serif;
+  --body:'Onest','Helvetica Neue',Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#11150F; --card:#1A211C; --ink:#EDF2EE; --muted:#93A19A; --line:#2B332D;
+    --mint:#5FAF95; --mint-deep:#8FD0BA; --mint-tint:#1C2B25; --on-mint:#0B120E;
+    --coral:#E2695F; --zone:#20281F+; --zone:#202823; --zone-line:#323C33;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11150F; --card:#1A211C; --ink:#EDF2EE; --muted:#93A19A; --line:#2B332D;
+  --mint:#5FAF95; --mint-deep:#8FD0BA; --mint-tint:#1C2B25; --on-mint:#0B120E;
+  --coral:#E2695F; --zone:#202823; --zone-line:#323C33;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
+button:focus-visible,[tabindex]:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--mint-deep);outline-offset:2px}
+h1,h2,h3,p{margin:0}
+.app{max-width:480px;height:100%;margin:0 auto;display:flex;flex-direction:column;background:var(--bg);position:relative}
+
+/* ---- Login ---- */
+/* Экран входа всегда тёмный: цвета заданы жёстко и не зависят от светлой/тёмной темы устройства */
+.login{--l-bg:#0B120E;--l-text:#F3F7F4;--l-sub:#C9D6CF;--l-mint:#7CCBAE;--l-on-mint:#0B120E;--l-border:#6F8579;
+  position:absolute;inset:0;display:flex;flex-direction:column;background:var(--l-bg);color:var(--l-text)}
+.login-photo{position:relative;flex:0 0 42%;overflow:hidden}
+.login-photo img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block}
+.login-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,18,14,.30) 0%,rgba(11,18,14,.62) 55%,#0B120E 100%)}
+.login-body{flex:1;background:var(--l-bg);padding:0 24px calc(26px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;margin-top:-46px;position:relative;overflow-y:auto}
+.login-logo{width:88px;height:auto;filter:drop-shadow(0 8px 16px rgba(0,0,0,.45))}
+.login-brand{font-family:var(--display);font-weight:700;color:var(--l-text);font-size:22px;letter-spacing:-.02em;margin-top:10px}
+.login-tag{color:var(--l-sub);font-size:14px;margin-top:4px;text-align:center}
+.login-form{width:100%;max-width:340px;margin-top:22px}
+.lf{margin-bottom:12px}
+.lf label{display:block;color:var(--l-sub);font-size:13.5px;font-weight:500;margin-bottom:6px}
+.lf input{width:100%;border:2px solid var(--l-border);background:#16211A;color:var(--l-text);border-radius:16px;padding:13px 14px;font:inherit}
+.lf input::placeholder{color:#8FA097}
+.lf input:focus-visible{outline:3px solid var(--l-mint);outline-offset:2px}
+.login-form .btn.big{margin-top:6px}
+.login-note{color:#A9B7AF;font-size:12.5px;text-align:center;margin-top:14px;line-height:1.5}
+.login-err{color:#FFB4AB;font-size:14px;font-weight:500;text-align:center;margin-top:2px;min-height:18px}
+
+.top{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px}
+.brand{display:flex;align-items:center;gap:8px}
+.brand img{width:26px;height:auto}
+.brand-txt{display:flex;flex-direction:column;line-height:1.1}
+.brand-t{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.02em}
+.brand-s{font-size:12.5px;color:var(--muted);margin-top:2px}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:14px;font-weight:500}
+.scroll{flex:1;overflow-y:auto;padding:4px 16px 24px;-webkit-overflow-scrolling:touch}
+.hero{background:var(--mint);color:var(--on-mint);border-radius:28px;padding:20px}
+.hero h1{font-family:var(--display);font-weight:700;font-size:22px;line-height:1.2;letter-spacing:-.02em}
+.hero p{margin-top:8px;font-size:15px;max-width:34ch}
+.hero .lbl{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;opacity:.85}
+.clock{font-family:var(--display);font-weight:700;font-size:44px;letter-spacing:-.03em;line-height:1.1;margin:4px 0 2px;font-variant-numeric:tabular-nums}
+.hero .where{font-size:15px;font-weight:500}
+.row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.btn{border-radius:999px;padding:13px 20px;font-weight:700;font-size:16px;min-height:48px}
+.btn.dark{background:#14201B;color:#8FE0C0}
+.btn.ghost{border:2px solid var(--on-mint);color:var(--on-mint)}
+.btn.main{background:var(--mint);color:var(--on-mint)}
+.btn.line{border:2px solid var(--line);color:var(--ink)}
+.login .btn.main{background:var(--l-mint);color:var(--l-on-mint);border:2px solid var(--l-mint)}
+.login .btn.line{background:transparent;border:2px solid var(--l-border);color:var(--l-text)}
+.login .btn:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.btn.danger{border:2px solid var(--coral);color:var(--coral)}
+.btn.small{padding:9px 15px;min-height:38px;font-size:14px}
+.btn.big{width:100%;margin-top:16px;padding:16px 20px;font-size:18px;font-family:var(--display);font-weight:700}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:14px;margin-top:14px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:4px;font-size:13.5px;font-weight:500;color:var(--ink)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.hint{margin-top:12px;font-size:14px;color:var(--muted)}
+.sec{display:flex;align-items:center;justify-content:space-between;margin:8px 0 2px;gap:10px}
+.sec h2{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.02em}
+.sec .btn{padding:10px 16px;min-height:42px;font-size:15px;flex:none}
+
+/* ---- Zone photo cards ---- */
+.zc{position:relative;display:block;width:100%;border-radius:22px;overflow:hidden;margin-top:14px;text-align:left}
+.zc img{display:block;width:100%;height:172px;object-fit:cover}
+.zc.mine{box-shadow:0 0 0 3px var(--coral) inset,0 0 0 1px var(--coral)}
+.zc-grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,16,13,0) 26%,rgba(10,16,13,.88) 100%)}
+.zc-info{position:absolute;left:14px;bottom:11px;color:#fff;right:78px;text-shadow:0 1px 4px rgba(0,0,0,.65)}
+.zc-info b{font-family:var(--display);font-size:17px;letter-spacing:-.01em;display:block;line-height:1.2}
+.zc-info span{font-size:13px;opacity:.95}
+.zc-count{position:absolute;top:10px;right:10px;background:var(--mint);color:var(--on-mint);font-weight:700;font-size:12px;border-radius:999px;padding:4px 10px}
+.zc-mine-badge{position:absolute;top:10px;left:10px;background:var(--coral);color:#fff;font-weight:700;font-size:12px;border-radius:999px;padding:4px 10px}
+.zc-avs{position:absolute;right:12px;bottom:12px;display:flex}
+.zc-avs .avl{width:26px;height:26px;font-size:14px;border:2px solid rgba(255,255,255,.9);margin-left:-8px;background:var(--card)}
+.zc-arrow{display:flex;justify-content:center;margin:-8px 0 0}
+.zc-arrow span{background:var(--mint);color:var(--on-mint);width:32px;height:32px;border-radius:50%;display:grid;place-items:center;border:4px solid var(--bg);font-size:15px}
+
+
+/* ---- Профиль заведения и «стена» (в духе соцсети): контурные карточки как у логотипа ---- */
+.prof{background:var(--card);border:2px solid var(--ink);border-radius:26px;overflow:hidden;box-shadow:4px 4px 0 var(--ink)}
+.prof-cover{height:132px;background:var(--mint)}
+.prof-cover img{width:100%;height:100%;object-fit:cover;object-position:center 22%;display:block}
+.prof-body{padding:0 16px 16px}
+.prof-head{display:flex;align-items:flex-end;gap:12px;margin-top:-40px}
+.prof-ava{width:82px;height:82px;flex:none;border-radius:50%;border:3px solid var(--ink);background:#fff;display:grid;place-items:center;overflow:hidden}
+.prof-ava img{width:90%;height:auto;display:block}
+.prof-name{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.02em;line-height:1.15;padding-bottom:6px}
+.prof-bio{margin:10px 0 0;font-size:15px;color:var(--ink)}
+.prof-row{display:flex;gap:8px;margin-top:8px;font-size:14.5px;align-items:flex-start}
+.prof-row .ic{flex:none}
+.prof-row .txt{white-space:pre-line;color:var(--ink)}
+.prof-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.prof-stat{border:2px solid var(--ink);border-radius:16px;background:var(--mint-tint);padding:8px 4px;text-align:center}
+.prof-stat b{display:block;font-family:var(--display);font-size:20px;line-height:1.1}
+.prof-stat span{font-size:12px;font-weight:600;color:var(--muted)}
+.prof-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.prof .btn.line{border-color:var(--ink);color:var(--ink)}
+.wall-h{display:flex;align-items:center;gap:8px;margin:22px 2px 6px}
+.wall-h h2{font-family:var(--display);font-size:19px;letter-spacing:-.02em}
+.wall-h .cnt{background:var(--coral);color:#fff;border-radius:999px;font-size:12px;font-weight:700;padding:3px 10px}
+.post{background:var(--card);border:2px solid var(--ink);border-radius:20px;padding:14px;margin-top:12px;box-shadow:3px 3px 0 var(--ink)}
+.post-top{display:flex;align-items:center;gap:10px}
+.post-ava{width:40px;height:40px;flex:none;border-radius:50%;border:2px solid var(--ink);background:#fff;display:grid;place-items:center;overflow:hidden}
+.post-ava img{width:88%;height:auto;display:block}
+.post-top b{display:block;line-height:1.2}
+.post-date{font-size:12.5px;color:var(--muted)}
+.post h3{font-family:var(--display);font-size:16px;letter-spacing:-.01em;margin-top:10px;line-height:1.25}
+.post p{margin:6px 0 0;font-size:15px;white-space:pre-line}
+.wall-more{margin-top:12px;width:100%}
+.sched-txt{white-space:pre-line;font-size:16px;margin-top:10px}
+.adm-thumb{display:block;max-height:70px;max-width:100%;border-radius:10px;border:1px solid var(--line);margin:0 0 8px}
+
+/* ---- invites ---- */
+.req{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px;margin-top:12px}
+.req-top{display:flex;align-items:flex-start;gap:10px}
+.avl{width:38px;height:38px;border-radius:50%;background:var(--zone);display:grid;place-items:center;font-size:21px;flex:none}
+.req-top .who{display:flex;flex-direction:column;line-height:1.2}
+.req-top .who b{font-weight:700}
+.req-top .who span{font-size:13px;color:var(--muted)}
+.req-when{margin-left:auto;background:var(--mint-tint);border:1px solid var(--zone-line);font-weight:700;font-size:13px;border-radius:999px;padding:5px 11px;white-space:nowrap;text-align:right}
+.req-text{font-size:16px;margin-top:12px;line-height:1.4}
+.req .btn.danger{margin-top:12px;padding:9px 15px;min-height:38px;font-size:14px}
+.cbox{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.cmt{display:flex;gap:9px;margin-bottom:10px}
+.cmt .avl{width:28px;height:28px;font-size:15px}
+.cmt .body{background:var(--zone);border-radius:14px;padding:7px 12px;font-size:14px}
+.cmt .body b{font-weight:700;font-size:13px;display:block;margin-bottom:1px}
+.cform{display:flex;gap:8px;margin-top:4px}
+.cform input{flex:1}
+.cform button{flex:none;background:var(--mint);color:var(--on-mint);border-radius:14px;padding:0 16px;font-weight:700;font-size:14px}
+.empty{text-align:center;padding:36px 16px;color:var(--muted)}
+.empty h3{font-family:var(--display);font-size:18px;color:var(--ink);margin-bottom:6px;letter-spacing:-.02em}
+
+/* ---- profile ---- */
+.me-card{text-align:center}
+.me-card .big-av{width:84px;height:84px;font-size:46px;margin:6px auto 10px;border-radius:50%;background:var(--zone);display:grid;place-items:center}
+.me-card h2{font-family:var(--display);font-size:22px;letter-spacing:-.02em}
+.me-card .uname{color:var(--muted);font-size:14px;margin-top:2px}
+.me-card p{color:var(--muted);font-size:15px;margin:6px auto 0;max-width:34ch}
+.rules{padding-left:20px;margin:10px 0 0;font-size:15px}
+.rules li{margin-bottom:8px}
+.mode{margin-top:14px;font-size:14px;color:var(--muted);border-left:4px solid var(--mint);padding-left:12px}
+.loy-head{display:flex;align-items:baseline;justify-content:space-between}
+.loy-head h2{font-family:var(--display);font-size:18px;letter-spacing:-.02em}
+.loy-count{font-family:var(--display);font-weight:700;font-size:15px;color:var(--muted)}
+.cups{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.cup{width:38px;height:38px;border-radius:50%;background:var(--zone);border:2px solid var(--zone-line);display:grid;place-items:center;font-size:19px;opacity:.4}
+.cup.on{opacity:1;border-color:var(--mint);background:var(--mint-tint)}
+.cup.on.last{border-color:var(--coral);background:var(--coral);opacity:1}
+.loy-note{margin-top:12px;font-size:14px;color:var(--muted)}
+.loy-note b{color:var(--coral)}
+
+.tabs{display:flex;background:var(--card);border-top:1px solid var(--line)}
+.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px 10px;font-size:12px;font-weight:600;color:var(--muted);position:relative}
+.tabs .ic{width:52px;height:30px;border-radius:999px;display:grid;place-items:center;transition:background .15s,color .15s}
+.tabs svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tabs button[aria-current="page"]{color:var(--ink);font-weight:800}
+.tabs button[aria-current="page"] .ic{background:var(--mint);color:var(--on-mint);box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.badge{position:absolute;top:4px;left:calc(50% + 10px);min-width:18px;height:18px;border-radius:9px;background:var(--coral);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 5px}
+
+#sheet{position:fixed;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center}
+#sheet[hidden]{display:none}
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+.panel{position:relative;width:100%;max-width:480px;max-height:92%;overflow-y:auto;background:var(--card);border-radius:28px 28px 0 0;padding:10px 20px calc(22px + env(safe-area-inset-bottom,0px))}
+.panel.enter{animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.grab{width:42px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 14px}
+.panel h2{font-family:var(--display);font-weight:700;font-size:21px;letter-spacing:-.02em;line-height:1.2}
+.panel .lead{color:var(--muted);font-size:15px;margin-top:4px}
+.fl{font-weight:700;font-size:15px;margin:18px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);border-radius:999px;padding:8px 14px;font-size:15px;font-weight:500;min-height:40px}
+.chip[aria-pressed="true"]{background:var(--mint);border-color:var(--mint);color:var(--on-mint);font-weight:700}
+.inp,.tarea{width:100%;border:2px solid var(--line);background:var(--bg);color:var(--ink);border-radius:16px;padding:12px 14px;font:inherit}
+.tarea{resize:vertical;min-height:84px}
+.two{display:flex;gap:10px}
+.two > *{flex:1}
+.person{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.person:last-of-type{border-bottom:0}
+.person b{display:block;line-height:1.2}
+.person span.m{font-size:13px;color:var(--muted)}
+.panel .btn.big{margin-top:20px}
+.panel .btn.line{width:100%;margin-top:10px}
+#toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:999px;font-size:15px;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:30;max-width:calc(100% - 32px);text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){.panel.enter{animation:none}#toast{transition:none}}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<div id="sheet" hidden></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+var LOGO_ICON='/img/logo.png';
+var ZONE_TOP='/img/zone-top.jpg';
+var ZONE_MIDDLE='/img/zone-middle.jpg';
+var ZONE_BASEMENT='/img/zone-basement.jpg';
+var LOGIN_PHOTO='/img/login.jpg';
+</script>
+<script>
+(function(){
+'use strict';
+
+/* ---------- Настройки заведения ---------- */
+var ZONES=[
+  {id:'top',      name:'Гамаки наверху',           img:function(){return state.settings.zone_img_top||ZONE_TOP;}},
+  {id:'middle',   name:'Барная стойка и стол',     img:function(){return state.settings.zone_img_middle||ZONE_MIDDLE;}},
+  {id:'basement', name:'Подвал',                   img:function(){return state.settings.zone_img_basement||ZONE_BASEMENT;}}
+];
+var MOODS={
+  open:   {label:'Открыт к знакомству', short:'Знакомлюсь',    color:'#6DB89E'},
+  games:  {label:'Играю в настолки',    short:'Играю',         color:'#3F8E76'},
+  company:{label:'Ищу компанию',        short:'Ищу компанию',  color:'#C93A31'},
+  quiet:  {label:'Просто сижу',         short:'Просто сижу',   color:'#93A19A'}
+};
+var H=3600000;
+var CUP_GOAL=10;
+var TEAPOT_GOAL=8;
+var MONTHS=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+var MONTHS_SR=['jan','feb','mar','apr','maj','jun','jul','avg','sep','okt','nov','dec'];
+function monthsFor(){return state.lang==='sr'?MONTHS_SR:MONTHS;}
+var POLL_MS=4000;
+
+var ZB={}; ZONES.forEach(function(z){ZB[z.id]=z;});
+
+/* ---------- Утилиты ---------- */
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function pad(n){return n<10?'0'+n:''+n;}
+function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+
+/* ---------- Локализация (RU/SR): весь текст для гостей, включая названия этажей и настроений.
+   Панель администратора остаётся только на русском. */
+var STRINGS={
+  ru:{
+    tagline:'Я здесь', loginTag:'Личный кабинет Seal&Tea', sections:'Разделы',
+    tabCafe:'Кафе', tabInvites:'Приглашения', tabProfile:'Профиль', inHall:'В зале',
+    btnLogin:'Войти', btnRegister:'Создать кабинет', btnWorking:'Секунду…',
+    fieldLogin:'Логин', fieldPass:'Пароль', loginPh:'Например, tea_lover', passPh:'Не меньше 4 символов',
+    loginNote:'Пароль защищён на сервере (bcrypt) и не виден даже нам.<br>Всё равно не используйте пароль, которым пользуетесь ещё где-то.',
+    heroTitle:'Вы сейчас в Seal&Tea?', heroDesc:'Отметьтесь на этаже, где сидите. Остальные увидят только ваш ник.',
+    btnHere:'Я здесь', btnChangeSpot:'Сменить место', btnLeave:'Уйти', heroHereLbl:'Вы в Seal&Tea уже',
+    emptyHall:'Пока никого не отметили. Станьте первым, и остальные увидят, что в зале кто-то есть.',
+    here:'здесь', nobody:'пока никого', youHere:'Вы здесь', peopleCount:'человек: {n}',
+    zone_top:'Гамаки наверху', zone_middle:'Барная стойка и стол', zone_basement:'Подвал',
+    mood_open:'Открыт к знакомству', moods_open:'Знакомлюсь', mood_games:'Играю в настолки', moods_games:'Играю',
+    mood_company:'Ищу компанию', moods_company:'Ищу компанию', mood_quiet:'Просто сижу', moods_quiet:'Просто сижу',
+    invitesTitle:'Приглашения', btnInvite:'Позвать',
+    emptyInvitesTitle:'Пока тихо', emptyInvitesDesc:'Позовите гостей за свой стол — укажите время и пару слов о встрече.',
+    itsYou:'это вы', invitesYou:'зовёт в гости', btnDeleteInvite:'Удалить заявку',
+    commentPh:'Написать комментарий…', comment:'Комментарий', btnSend:'Отправить',
+    seenAs:'Так вас видят другие. Пароль и настоящее имя нигде не показываются.',
+    btnReroll:'Другой ник', btnLeaveMap:'Уйти с карты', btnLogout:'Выйти из кабинета', cabinet:'Кабинет: ',
+    yourCups:'Ваши чашки', yourPots:'Ваши чайники',
+    cupFree:'<b>Следующая чашка — за счёт заведения!</b> Скажите бармену.', cupsLeft:'До бесплатной чашки осталось <b>{n}</b>.',
+    potFree:'<b>Следующий чайник — за счёт заведения!</b> Скажите бармену.', potsLeft:'До бесплатного чайника осталось <b>{n}</b>.',
+    rulesTitle:'Правила зала',
+    rule1:'Не хотите разговоров? Выберите статус «Просто сижу», и вас не будут звать.',
+    rule2:'Знакомьтесь за столом, а не в личке: телефоны и соцсети здесь не обмениваются.',
+    rule3:'Чашки и чайники отмечает бариста — просто скажите ему.',
+    modeNote:'Кабинет, отметки, приглашения и комментарии хранятся на сервере и видны всем, кто открыл это приложение.',
+    profBio:'Чайная без дыма: чай, концерты, настолки, мастер-классы', profAddr:'Масарикова 18, Нови Сад',
+    statInHall:'в зале', statPosts:'на стене', statInvites:'приглашений',
+    btnMenu:'Меню', btnSchedule:'Расписание', scheduleTitle:'Расписание', scheduleImgBtn:'Открыть расписание картинкой',
+    wallTitle:'Стена', wallEmpty:'На стене пока пусто — скоро здесь появятся новости и события.',
+    showAll:'Показать все ({n})', showLess:'Свернуть', whereTitle:'Кто где сидит',
+    menuTitle:'Меню Seal&Tea', menuNone:'Меню пока не загружено.', scheduleNone:'Расписание пока не добавлено.',
+    checkinTitle:'Отметиться в зале', whereSit:'Где вы сидите?', nickLbl:'Ник: ', placeLbl:'Место', moodLbl:'Настроение', btnCheckin:'Отметиться',
+    inviteSheetTitle:'Позвать в гости', inviteHeading:'Пригласить в Seal&Tea', inviteTextLbl:'Текст приглашения',
+    invitePh:'Например: собираемся сыграть в Codenames, приходите с чаем', whenLbl:'Когда', dateLbl:'Дата', timeLbl:'Время', btnPublish:'Опубликовать',
+    nowHere:'Сейчас здесь: {n}', nobodyHere:'Пока здесь никого', youSuffix:' (вы)', btnCheckinHere:'Отметиться здесь',
+    toastChecked:'Отмечено: {z}', toastInvitePosted:'Приглашение опубликовано', toastLeft:'Вы ушли с карты', toastInviteDeleted:'Заявка удалена',
+    errCreds:'Неверный логин или пароль', errTaken:'Такой логин уже занят, выберите другой или войдите',
+    errLoginShort:'Логин — минимум 2 символа', errPassShort:'Пароль — минимум 4 символа',
+    errLoginChars:'Используйте буквы, цифры, «_», «-» или «.»', errEnter:'Введите логин и пароль',
+    errGeneric:'Что-то пошло не так', errNet:'Нет связи с сервером. Проверьте интернет и попробуйте ещё раз.',
+    errSave:'Не получилось сохранить. Попробуйте ещё раз.', errInviteText:'Добавьте текст приглашения',
+    errBadDate:'Некорректная дата или время', errRegFail:'Не получилось создать кабинет. Попробуйте ещё раз.',
+    errLoginFail:'Не получилось войти. Попробуйте ещё раз.', errTooBig:'Файл слишком большой'
+  },
+  sr:{
+    tagline:'Ja sam ovde', loginTag:'Lični nalog Seal&Tea', sections:'Sekcije',
+    tabCafe:'Kafe', tabInvites:'Pozivi', tabProfile:'Profil', inHall:'U sali',
+    btnLogin:'Prijava', btnRegister:'Napravi nalog', btnWorking:'Sačekajte…',
+    fieldLogin:'Korisničko ime', fieldPass:'Lozinka', loginPh:'Na primer, tea_lover', passPh:'Najmanje 4 karaktera',
+    loginNote:'Lozinka je zaštićena na serveru (bcrypt) i nije vidljiva ni nama.<br>Ipak nemojte koristiti lozinku koju koristite negde drugde.',
+    heroTitle:'Da li ste sada u Seal&Tea?', heroDesc:'Označite sprat na kom sedite. Ostali će videti samo vaš nadimak.',
+    btnHere:'Ja sam ovde', btnChangeSpot:'Promeni mesto', btnLeave:'Odlazim', heroHereLbl:'U Seal&Tea ste već',
+    emptyHall:'Još niko nije označen. Budite prvi, pa će ostali videti da je neko u sali.',
+    here:'ovde', nobody:'trenutno niko', youHere:'Vi ste ovde', peopleCount:'osoba: {n}',
+    zone_top:'Hamaci na spratu', zone_middle:'Šank i sto', zone_basement:'Podrum',
+    mood_open:'Otvoren za upoznavanje', moods_open:'Upoznajem se', mood_games:'Igram društvene igre', moods_games:'Igram',
+    mood_company:'Tražim društvo', moods_company:'Tražim društvo', mood_quiet:'Samo sedim', moods_quiet:'Samo sedim',
+    invitesTitle:'Pozivi', btnInvite:'Pozovi',
+    emptyInvitesTitle:'Za sada je tiho', emptyInvitesDesc:'Pozovite goste za svoj sto — navedite vreme i par reči o druženju.',
+    itsYou:'to ste vi', invitesYou:'poziva u goste', btnDeleteInvite:'Obriši poziv',
+    commentPh:'Napišite komentar…', comment:'Komentar', btnSend:'Pošalji',
+    seenAs:'Tako vas vide drugi. Lozinka i pravo ime se nigde ne prikazuju.',
+    btnReroll:'Drugi nadimak', btnLeaveMap:'Skini me sa mape', btnLogout:'Odjavi se', cabinet:'Nalog: ',
+    yourCups:'Vaše šoljice', yourPots:'Vaši čajnici',
+    cupFree:'<b>Sledeća šoljica je na račun kuće!</b> Recite osoblju.', cupsLeft:'Do besplatne šoljice ostalo je <b>{n}</b>.',
+    potFree:'<b>Sledeći čajnik je na račun kuće!</b> Recite osoblju.', potsLeft:'Do besplatnog čajnika ostalo je <b>{n}</b>.',
+    rulesTitle:'Pravila sale',
+    rule1:'Ne želite razgovor? Izaberite status „Samo sedim“ i nećemo vas zvati.',
+    rule2:'Upoznajte se za stolom, a ne u porukama: telefoni i društvene mreže se ovde ne razmenjuju.',
+    rule3:'Šoljice i čajnike beleži osoblje — samo im recite.',
+    modeNote:'Nalog, prijave, pozivi i komentari se čuvaju na serveru i vidljivi su svima koji su otvorili ovu aplikaciju.',
+    profBio:'Čajdžinica bez dima: čaj, koncerti, društvene igre, radionice', profAddr:'Masarikova 18, Novi Sad',
+    statInHall:'u sali', statPosts:'na zidu', statInvites:'poziva',
+    btnMenu:'Meni', btnSchedule:'Raspored', scheduleTitle:'Raspored', scheduleImgBtn:'Otvori raspored kao sliku',
+    wallTitle:'Zid', wallEmpty:'Na zidu je za sada prazno — uskoro stižu vesti i događaji.',
+    showAll:'Prikaži sve ({n})', showLess:'Sakrij', whereTitle:'Ko gde sedi',
+    menuTitle:'Meni Seal&Tea', menuNone:'Meni još nije postavljen.', scheduleNone:'Raspored još nije dodat.',
+    checkinTitle:'Označite se u sali', whereSit:'Gde sedite?', nickLbl:'Nadimak: ', placeLbl:'Mesto', moodLbl:'Raspoloženje', btnCheckin:'Označi me',
+    inviteSheetTitle:'Pozovi u goste', inviteHeading:'Pozovi u Seal&Tea', inviteTextLbl:'Tekst poziva',
+    invitePh:'Na primer: igramo Codenames, dođite na čaj', whenLbl:'Kada', dateLbl:'Datum', timeLbl:'Vreme', btnPublish:'Objavi',
+    nowHere:'Trenutno ovde: {n}', nobodyHere:'Ovde za sada nema nikoga', youSuffix:' (vi)', btnCheckinHere:'Označi me ovde',
+    toastChecked:'Označeno: {z}', toastInvitePosted:'Poziv je objavljen', toastLeft:'Skinuti ste sa mape', toastInviteDeleted:'Poziv je obrisan',
+    errCreds:'Pogrešno korisničko ime ili lozinka', errTaken:'To korisničko ime je već zauzeto — izaberite drugo ili se prijavite',
+    errLoginShort:'Korisničko ime — najmanje 2 karaktera', errPassShort:'Lozinka — najmanje 4 karaktera',
+    errLoginChars:'Koristite slova, brojeve, „_“, „-“ ili „.“', errEnter:'Unesite korisničko ime i lozinku',
+    errGeneric:'Nešto je pošlo naopako', errNet:'Nema veze sa serverom. Proverite internet i pokušajte ponovo.',
+    errSave:'Nije uspelo čuvanje. Pokušajte ponovo.', errInviteText:'Dodajte tekst poziva',
+    errBadDate:'Neispravan datum ili vreme', errRegFail:'Nije uspelo pravljenje naloga. Pokušajte ponovo.',
+    errLoginFail:'Prijava nije uspela. Pokušajte ponovo.', errTooBig:'Fajl je prevelik'
+  }
+};
+var SERVER_ERR={
+  'Неверный логин или пароль':'errCreds',
+  'Такой логин уже занят, выберите другой или войдите':'errTaken',
+  'Логин — минимум 2 символа':'errLoginShort',
+  'Пароль — минимум 4 символа':'errPassShort',
+  'Используйте буквы, цифры, «_», «-» или «.»':'errLoginChars',
+  'Введите логин и пароль':'errEnter',
+  'Что-то пошло не так':'errGeneric',
+  'Добавьте текст приглашения':'errInviteText',
+  'Некорректная дата или время':'errBadDate',
+  'Не получилось создать кабинет. Попробуйте ещё раз.':'errRegFail',
+  'Не получилось войти. Попробуйте ещё раз.':'errLoginFail'
+};
+function t(key,vars){
+  var s=(STRINGS[state.lang]&&STRINGS[state.lang][key])||STRINGS.ru[key]||key;
+  if(vars){Object.keys(vars).forEach(function(k){s=s.split('{'+k+'}').join(vars[k]);});}
+  return s;
+}
+function tErr(msg){var k=SERVER_ERR[msg];return k?t(k):msg;}
+/* названия для гостей (переводятся); для админки используются русские ZONES[].name и MOODS[].label */
+function zoneName(id){return t('zone_'+id);}
+function moodLabel(k){return t('mood_'+k);}
+function moodShort(k){return t('moods_'+k);}
+/* Случайные ники хранятся по-русски («Смелый лис»); в сербском интерфейсе показываем их по-сербски */
+var NICK_SR={
+  adj:{'Тихий':['Tihi','Tiha'],'Уютный':['Ušuškani','Ušuškana'],'Дымчатый':['Dimni','Dimna'],'Смелый':['Hrabri','Hrabra'],'Пушистый':['Pahuljasti','Pahuljasta'],
+       'Весёлый':['Veseli','Vesela'],'Сонный':['Pospani','Pospana'],'Хитрый':['Lukavi','Lukava'],'Медовый':['Medeni','Medena'],'Чайный':['Čajni','Čajna']},
+  animal:{'тюлень':['tuljan',0],'енот':['rakun',0],'ёж':['jež',0],'кот':['mačak',0],'филин':['ćuk',0],'лис':['lisac',0],'осьминог':['hobotnica',1],'барсук':['jazavac',0],'медведь':['medved',0]}
+};
+function dispNick(n){
+  if(state.lang!=='sr'||!n)return n;
+  var parts=String(n).split(' ');if(parts.length!==2)return n;
+  var a=NICK_SR.adj[parts[0]],an=NICK_SR.animal[parts[1]];
+  if(!a||!an)return n;
+  return a[an[1]]+' '+an[0];
+}
+function setLang(l){state.lang=l;lsSet('yz_lang',l);document.documentElement.lang=(l==='sr'?'sr':'ru');render();}
+function fmtDur(ms){ms=Math.max(0,ms);var s=Math.floor(ms/1000);return Math.floor(s/3600)+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60);}
+function todayStr(d){d=d||new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function nowTimeStr(d){d=d||new Date();return pad(d.getHours())+':'+pad(d.getMinutes());}
+function dtMillis(date,time){var p=(date||'').split('-'),t=(time||'0:0').split(':');if(p.length<3)return 0;return new Date(+p[0],+p[1]-1,+p[2],+t[0]||0,+t[1]||0).getTime();}
+function fmtWhen(date,time){
+  var p=(date||'').split('-');if(p.length<3)return time||'';
+  var d=new Date(+p[0],+p[1]-1,+p[2]);
+  return d.getDate()+' '+monthsFor()[d.getMonth()]+', '+(time||'');
+}
+function fmtPostDate(v){var d=new Date(v);if(isNaN(d.getTime()))return '';return d.getDate()+' '+monthsFor()[d.getMonth()]+' · '+pad(d.getHours())+':'+pad(d.getMinutes());}
+function fmtCmtTime(ms){var d=new Date(ms);return pad(d.getHours())+':'+pad(d.getMinutes());}
+function clamp(n,a,b){return Math.max(a,Math.min(b,n));}
+function toMillis(v){return typeof v==='number'?v:new Date(v).getTime();}
+
+/* ---------- API-клиент (Vercel + Postgres, реальный бэкенд) ---------- */
+async function api(path,opts){
+  opts=opts||{};
+  var res;
+  try{
+    res=await fetch(path,Object.assign({credentials:'same-origin',headers:{'Content-Type':'application/json'}},opts));
+  }catch(e){
+    var err=new Error('network');err.network=true;throw err;
+  }
+  var data=null;
+  try{data=await res.json();}catch(e){}
+  if(!res.ok){
+    var err2=new Error((data&&data.error)||(res.status===413?t('errTooBig'):('HTTP '+res.status)));
+    err2.status=res.status;err2.payload=data;throw err2;
+  }
+  return data;
+}
+var apiStore={
+  me:function(){return api('/api/me');},
+  register:function(username,password){return api('/api/register',{method:'POST',body:JSON.stringify({username:username,password:password})});},
+  login:function(username,password){return api('/api/login',{method:'POST',body:JSON.stringify({username:username,password:password})});},
+  logout:function(){return api('/api/logout',{method:'POST'});},
+  reroll:function(){return api('/api/me',{method:'PUT',body:JSON.stringify({action:'reroll'})});},
+  loyaltyPlus:function(){return api('/api/me',{method:'PUT',body:JSON.stringify({action:'loyalty-plus'})});},
+  presenceList:function(){return api('/api/presence');},
+  checkin:function(zone,mood){return api('/api/presence',{method:'PUT',body:JSON.stringify({zone:zone,mood:mood})});},
+  leaveZone:function(){return api('/api/presence',{method:'DELETE'});},
+  invitesList:function(){return api('/api/invites');},
+  createInvite:function(text,date,time){return api('/api/invites',{method:'POST',body:JSON.stringify({text:text,date:date,time:time})});},
+  deleteInvite:function(id){return api('/api/invites?id='+encodeURIComponent(id),{method:'DELETE'});},
+  commentsList:function(){return api('/api/comments');},
+  addComment:function(inviteId,text){return api('/api/comments',{method:'POST',body:JSON.stringify({inviteId:inviteId,text:text})});},
+  adminUsers:function(){return api('/api/admin/users');},
+  adminLoyaltyPlus:function(id){return api('/api/admin/loyalty',{method:'POST',body:JSON.stringify({id:id})});},
+  adminActivity:function(date){return api('/api/admin/activity?date='+encodeURIComponent(date));},
+  settings:function(){return api('/api/settings');},
+  announcements:function(){return api('/api/announcements');},
+  adminSettings:function(){return api('/api/admin/settings');},
+  adminSetSettings:function(partial){return api('/api/admin/settings',{method:'PUT',body:JSON.stringify(partial)});},
+  adminAnnouncements:function(){return api('/api/admin/announcements');},
+  adminAddAnnouncement:function(title,body){return api('/api/admin/announcements',{method:'POST',body:JSON.stringify({title:title,body:body})});},
+  adminDeleteAnnouncement:function(id){return api('/api/admin/announcements?id='+encodeURIComponent(id),{method:'DELETE'});},
+  adminAddPresence:function(id,zone,mood){return api('/api/admin/presence',{method:'POST',body:JSON.stringify({id:id,zone:zone,mood:mood})});},
+  adminRemovePresence:function(id){return api('/api/admin/presence?id='+encodeURIComponent(id),{method:'DELETE'});},
+  adminSetPassword:function(id,password){return api('/api/admin/set-password',{method:'POST',body:JSON.stringify({id:id,password:password})});},
+  adminDrink:function(id,kind,delta){return api('/api/admin/drinks',{method:'POST',body:JSON.stringify({id:id,kind:kind,delta:delta})});},
+  adminDeleteUser:function(id){return api('/api/admin/users?id='+encodeURIComponent(id),{method:'DELETE'});}
+};
+
+/* ---------- Состояние ---------- */
+var $app=document.getElementById('app'),$sheet=document.getElementById('sheet'),$toast=document.getElementById('toast');
+var state={screen:'boot',tab:'cafe',authMode:'login',uid:null,username:null,me:null,loyalty:0,teapots:0,isAdmin:false,lang:(lsGet('yz_lang')||'ru'),presence:[],invites:[],comments:[],announcements:[],settings:{},adminUsers:[],adminActivity:[],adminDate:todayStr(),adminAnnouncements:[],menuOpen:false,wallAll:false,loginErr:'',loginBusy:false};
+var sheet=null,lastFocus=null,raf=0,forceRender=false,visBound=false,toastT=0,polls=[];
+
+function people(){var t=Date.now();return state.presence.filter(function(p){return ZB[p.zone]&&t-toMillis(p.at)<6*H;});}
+function myPresence(){var id=state.uid;return people().filter(function(p){return p.id===id;})[0]||null;}
+function activeInvites(){var t=Date.now();return state.invites.filter(function(i){return dtMillis(i.date,i.time)>t-24*H;}).sort(function(a,b){return dtMillis(a.date,a.time)-dtMillis(b.date,b.time);});}
+function commentsOf(id){return state.comments.filter(function(c){return c.invite_id===id;}).sort(function(a,b){return toMillis(a.at)-toMillis(b.at);});}
+
+/* ---------- Иконки ---------- */
+var ICONS={
+  cafe:'<svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7"/><path d="M6 11v9h12v-9"/><path d="M10 20v-5h4v5"/></svg>',
+  inv:'<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>',
+  me:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4-6 8-6s7 1.5 8 6"/></svg>',
+  admin:'<svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>'
+};
+
+/* ---------- Рендер ---------- */
+/* Сохраняем введённый текст, выбранные значения и фокус при перерисовке —
+   иначе фоновое обновление (каждые несколько секунд) стирало бы всё, что человек набирает. */
+function formKey(el){return el.id||(el.getAttribute&&el.getAttribute('data-cid')?'cid:'+el.getAttribute('data-cid'):null);}
+function captureForm(){
+  var cap={vals:{},activeKey:null,sel:null},active=document.activeElement;
+  Array.prototype.forEach.call($app.querySelectorAll('input,textarea,select'),function(el){
+    if(el.type==='file'||el.type==='button'||el.type==='submit')return;
+    var key=formKey(el);if(!key)return;
+    cap.vals[key]=el.value;
+    if(el===active){cap.activeKey=key;try{cap.sel=[el.selectionStart,el.selectionEnd];}catch(e){}}
+  });
+  return cap;
+}
+function findByKey(key){
+  return key.indexOf('cid:')===0?$app.querySelector('input[data-cid="'+key.slice(4)+'"]'):$app.querySelector('[id="'+key+'"]');
+}
+function restoreForm(cap){
+  Object.keys(cap.vals).forEach(function(key){
+    var el=findByKey(key);if(!el)return;
+    if(el.tagName==='SELECT'){
+      for(var i=0;i<el.options.length;i++){if(el.options[i].value===cap.vals[key]){el.value=cap.vals[key];break;}}
+    }else{el.value=cap.vals[key];}
+  });
+  if(cap.activeKey){
+    var a=findByKey(cap.activeKey);
+    if(a){a.focus();if(cap.sel){try{a.setSelectionRange(cap.sel[0],cap.sel[1]);}catch(e){}}}
+  }
+}
+/* true, если в форме что-то введено/выбрано (в т.ч. файл) — тогда фоновое обновление не перерисовывает экран */
+function isFormDirty(){
+  var root=document.getElementById('main');if(!root)return false;
+  var els=root.querySelectorAll('input,textarea,select');
+  for(var i=0;i<els.length;i++){
+    var el=els[i];
+    if(el.type==='file'){if(el.files&&el.files.length)return true;continue;}
+    if(el===document.activeElement)return true;
+    if(el.tagName==='SELECT'){
+      var def=0;for(var j=0;j<el.options.length;j++){if(el.options[j].defaultSelected){def=j;break;}}
+      if(el.selectedIndex!==def)return true;continue;
+    }
+    if(el.value!==el.defaultValue)return true;
+  }
+  return false;
+}
+function render(){
+  if(state.screen==='boot'){$app.innerHTML='';return;}
+  var cap=captureForm();
+  if(state.screen==='login'){$app.innerHTML=loginView();restoreForm(cap);return;}
+  var sc=document.getElementById('main'),top=sc?sc.scrollTop:0;
+  var n=people().length,ni=activeInvites().length;
+  var body=state.tab==='cafe'?cafeView():state.tab==='invites'?invitesView():state.tab==='admin'?adminView():profileView();
+  $app.innerHTML=
+    '<header class="top"><div class="brand"><img src="'+LOGO_ICON+'" alt=""><div class="brand-txt"><span class="brand-t">Seal&amp;Tea</span><span class="brand-s">'+t('tagline')+'</span></div></div>'+
+    '<div class="row" style="margin:0;gap:8px;align-items:center">'+langSwitch()+'<div class="pill">'+t('inHall')+': '+n+'</div></div></header>'+
+    '<main class="scroll" id="main">'+body+'</main>'+
+    '<nav class="tabs" aria-label="'+esc(t('sections'))+'">'+
+      tab('cafe',t('tabCafe'),ICONS.cafe,0)+tab('invites',t('tabInvites'),ICONS.inv,ni)+tab('me',t('tabProfile'),ICONS.me,0)+
+      (state.isAdmin?tab('admin','Админ',ICONS.admin,0):'')+
+    '</nav>';
+  var m=document.getElementById('main');if(m)m.scrollTop=top;
+  restoreForm(cap);
+  tick();
+}
+function langSwitch(){
+  return '<div class="row" style="margin:0;gap:4px">'+
+    '<button class="btn'+(state.lang==='ru'?' main':' line')+' small" style="padding:6px 10px;min-height:32px;font-size:12px" data-a="set-lang" data-lang="ru">RU</button>'+
+    '<button class="btn'+(state.lang==='sr'?' main':' line')+' small" style="padding:6px 10px;min-height:32px;font-size:12px" data-a="set-lang" data-lang="sr">SR</button>'+
+  '</div>';
+}
+function tab(id,label,icon,badge){
+  return '<button data-a="tab" data-id="'+id+'"'+(state.tab===id?' aria-current="page"':'')+'><span class="ic">'+icon+'</span>'+label+
+    (badge?'<span class="badge">'+badge+'</span>':'')+'</button>';
+}
+
+/* ---------- Логин / регистрация ---------- */
+function loginView(){
+  var isReg=state.authMode==='register';
+  return '<div class="login"><div class="login-photo"><img src="'+LOGIN_PHOTO+'" alt=""></div>'+
+    '<div class="login-body"><div style="position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:16px">'+langSwitch()+'</div>'+
+    '<img class="login-logo" src="'+LOGO_ICON+'" alt="Seal&amp;Tea">'+
+    '<div class="login-brand">'+t('tagline')+'</div><p class="login-tag">'+t('loginTag')+'</p>'+
+    '<div class="row" style="justify-content:center;margin-top:16px">'+
+      '<button type="button" class="btn'+(isReg?' line':' main')+' small" data-a="auth-mode" data-mode="login" aria-pressed="'+(!isReg)+'">'+t('btnLogin')+'</button>'+
+      '<button type="button" class="btn'+(isReg?' main':' line')+' small" data-a="auth-mode" data-mode="register" aria-pressed="'+isReg+'">'+t('btnRegister')+'</button>'+
+    '</div>'+
+    '<form class="login-form" id="loginForm" novalidate>'+
+      '<div class="lf"><label for="luser">'+t('fieldLogin')+'</label><input class="inp" id="luser" autocomplete="username" placeholder="'+t('loginPh')+'" maxlength="40"></div>'+
+      '<div class="lf"><label for="lpass">'+t('fieldPass')+'</label><input class="inp" id="lpass" type="password" autocomplete="'+(isReg?'new-password':'current-password')+'" placeholder="'+t('passPh')+'" maxlength="80"></div>'+
+      '<p class="login-err">'+esc(state.loginErr)+'</p>'+
+      '<button class="btn main big" type="submit" data-a="do-auth"'+(state.loginBusy?' disabled':'')+'>'+(state.loginBusy?t('btnWorking'):(isReg?t('btnRegister'):t('btnLogin')))+'</button>'+
+      '<p class="login-note">'+t('loginNote')+'</p>'+
+    '</form></div></div>';
+}
+function doAuth(){
+  var u=(document.getElementById('luser')||{}).value||'',p=(document.getElementById('lpass')||{}).value||'';
+  u=u.trim();
+  if(u.length<2){state.loginErr=t('errLoginShort');render();return;}
+  if(p.length<4){state.loginErr=t('errPassShort');render();return;}
+  state.loginErr='';state.loginBusy=true;render();
+  var call=state.authMode==='register'?apiStore.register(u,p):apiStore.login(u,p);
+  call.then(function(acc){
+    state.uid=acc.id;state.username=acc.username;state.me={nick:acc.nick,emoji:acc.emoji};state.loyalty=Number(acc.loyalty)||0;state.teapots=Number(acc.teapots)||0;state.isAdmin=!!acc.is_admin;
+    afterLogin();
+  }).catch(function(e){
+    state.loginBusy=false;
+    state.loginErr=e.network?t('errNet'):tErr(e.message||'Что-то пошло не так');
+    render();
+  });
+}
+function afterLogin(){
+  state.loginBusy=false;state.screen='app';state.tab='cafe';
+  subscribe();
+  render();
+}
+function logout(){
+  polls.forEach(function(id){clearInterval(id);});polls=[];
+  apiStore.logout().catch(function(){});
+  state.uid=null;state.username=null;state.me=null;state.loyalty=0;state.isAdmin=false;state.presence=[];state.invites=[];state.comments=[];state.adminUsers=[];state.adminActivity=[];
+  state.screen='login';state.authMode='login';state.loginErr='';render();
+}
+
+/* ---------- Кафе ---------- */
+function statChip(n,label){return '<div class="prof-stat"><b>'+n+'</b><span>'+esc(label)+'</span></div>';}
+function venueCardView(){
+  var s=state.settings||{};
+  var rows='<div class="prof-row"><span class="ic">📍</span><span class="txt">'+esc(t('profAddr'))+'</span></div>';
+  if(s.hours)rows+='<div class="prof-row"><span class="ic">🕒</span><span class="txt">'+esc(s.hours)+'</span></div>';
+  var actions='';
+  if(s.menu_image)actions+='<button class="btn main small" data-a="open-menu">🍵 '+esc(t('btnMenu'))+'</button>';
+  if(s.schedule_image)actions+='<button class="btn line small" data-a="open-schedule">🗓 '+esc(t('btnSchedule'))+'</button>';
+  return '<section class="prof">'+
+    '<div class="prof-cover"><img src="'+LOGIN_PHOTO+'" alt=""></div>'+
+    '<div class="prof-body"><div class="prof-head"><div class="prof-ava"><img src="'+LOGO_ICON+'" alt="Seal&amp;Tea"></div><div class="prof-name">Seal&amp;Tea</div></div>'+
+    '<p class="prof-bio">'+esc(t('profBio'))+'</p>'+rows+
+    '<div class="prof-stats">'+statChip(people().length,t('statInHall'))+statChip((state.announcements||[]).length,t('statPosts'))+statChip(activeInvites().length,t('statInvites'))+'</div>'+
+    (actions?'<div class="prof-actions">'+actions+'</div>':'')+
+    '</div></section>';
+}
+function wallPost(a){
+  return '<article class="post"><div class="post-top"><span class="post-ava"><img src="'+LOGO_ICON+'" alt=""></span>'+
+    '<div><b>Seal&amp;Tea</b><span class="post-date">'+esc(fmtPostDate(a.created_at))+'</span></div></div>'+
+    '<h3>'+esc(a.title)+'</h3><p>'+esc(a.body)+'</p></article>';
+}
+function wallView(){
+  var all=state.announcements||[];
+  var head='<div class="wall-h"><h2>📌 '+esc(t('wallTitle'))+'</h2>'+(all.length?'<span class="cnt">'+all.length+'</span>':'')+'</div>';
+  if(!all.length)return head+'<div class="post"><p style="margin:0">'+esc(t('wallEmpty'))+'</p></div>';
+  var shown=state.wallAll?all:all.slice(0,3);
+  var more=all.length>3?'<button class="btn line small wall-more" data-a="wall-toggle">'+esc(state.wallAll?t('showLess'):t('showAll',{n:all.length}))+'</button>':'';
+  return head+shown.map(wallPost).join('')+more;
+}
+function cafeView(){
+  var mine=myPresence(),hero;
+  if(mine){
+    hero='<section class="hero"><div class="lbl">'+t('heroHereLbl')+'</div><div class="clock" id="timer">'+fmtDur(Date.now()-toMillis(mine.at))+'</div>'+
+      '<div class="where">'+esc(zoneName(mine.zone))+' · '+esc(moodShort(mine.mood))+'</div>'+
+      '<div class="row"><button class="btn dark" data-a="open-checkin">'+t('btnChangeSpot')+'</button><button class="btn ghost" data-a="leave">'+t('btnLeave')+'</button></div></section>';
+  }else{
+    hero='<section class="hero"><h1>'+t('heroTitle')+'</h1><p>'+t('heroDesc')+'</p>'+
+      '<button class="btn dark big" data-a="open-checkin">'+t('btnHere')+'</button></section>';
+  }
+  var list=people();
+  var legend=Object.keys(MOODS).map(function(k){return '<span><i class="dot" style="background:'+MOODS[k].color+'"></i>'+esc(moodLabel(k))+'</span>';}).join('');
+  var hint=list.length?'':'<p class="hint">'+t('emptyHall')+'</p>';
+  var cards=ZONES.map(function(z,idx){
+    var here=list.filter(function(p){return p.zone===z.id;});
+    var isMine=mine&&mine.zone===z.id;
+    var zn=zoneName(z.id);
+    var avs=here.slice(0,4).map(function(p){return '<span class="avl">'+esc(String(p.emoji||'🙂').slice(0,4))+'</span>';}).join('');
+    var arrow=idx===1?'<div class="zc-arrow"><span>↓</span></div>':'';
+    return arrow+'<button class="zc'+(isMine?' mine':'')+'" data-a="zone" data-id="'+z.id+'" aria-label="'+esc(zn)+', '+esc(t('peopleCount',{n:here.length}))+'">'+
+      '<img src="'+z.img()+'" alt="'+esc(zn)+'">'+
+      '<div class="zc-grad"></div>'+
+      (isMine?'<div class="zc-mine-badge">'+esc(t('youHere'))+'</div>':'')+
+      (here.length?'<div class="zc-count">'+here.length+'</div>':'')+
+      '<div class="zc-info"><b>'+esc(zn)+'</b><span>'+(here.length?here.length+' '+t('here'):t('nobody'))+'</span></div>'+
+      (avs?'<div class="zc-avs">'+avs+'</div>':'')+
+    '</button>';
+  }).join('');
+  return venueCardView()+wallView()+
+    '<div class="wall-h"><h2>🍵 '+esc(t('whereTitle'))+'</h2></div>'+
+    hero+'<div style="margin-top:2px">'+cards+'</div><div class="legend" style="margin-top:14px">'+legend+'</div>'+hint;
+}
+
+/* ---------- Приглашения ---------- */
+function invitesView(){
+  var list=activeInvites();
+  var head='<div class="sec"><h2>'+t('invitesTitle')+'</h2><button class="btn main" data-a="open-invite">'+t('btnInvite')+'</button></div>';
+  if(!list.length){
+    return head+'<div class="empty"><h3>'+t('emptyInvitesTitle')+'</h3><p>'+t('emptyInvitesDesc')+'</p></div>';
+  }
+  return head+list.map(function(i){
+    var cs=commentsOf(i.id),iAm=i.uid===state.uid;
+    var cmts=cs.map(function(c){
+      return '<div class="cmt"><span class="avl">'+esc(String(c.emoji||'🙂').slice(0,4))+'</span>'+
+        '<div class="body"><b>'+esc(dispNick(c.nick))+' · '+fmtCmtTime(toMillis(c.at))+'</b>'+esc(c.text)+'</div></div>';
+    }).join('');
+    return '<article class="req">'+
+      '<div class="req-top"><span class="avl">'+esc(String(i.emoji||'🙂').slice(0,4))+'</span>'+
+      '<div class="who"><b>'+esc(dispNick(i.nick))+'</b><span>'+(iAm?t('itsYou'):t('invitesYou'))+'</span></div>'+
+      '<div class="req-when">'+esc(fmtWhen(i.date,i.time))+'</div></div>'+
+      '<p class="req-text">'+esc(i.text)+'</p>'+
+      (iAm?'<button class="btn danger" data-a="close-invite" data-id="'+esc(i.id)+'">'+t('btnDeleteInvite')+'</button>':'')+
+      '<div class="cbox">'+cmts+
+      '<div class="cform"><input class="inp" type="text" maxlength="140" placeholder="'+t('commentPh')+'" data-cid="'+esc(i.id)+'" aria-label="'+esc(t('comment'))+'">'+
+      '<button data-a="send-comment" data-id="'+esc(i.id)+'">'+t('btnSend')+'</button></div></div>'+
+    '</article>';
+  }).join('');
+}
+
+/* ---------- Админ ---------- */
+function fmtActTime(ms){var d=new Date(ms);return pad(d.getHours())+':'+pad(d.getMinutes());}
+function fmtDateOnly(date){var p=(date||'').split('-');if(p.length<3)return date||'';var d=new Date(+p[0],+p[1]-1,+p[2]);return d.getDate()+' '+MONTHS[d.getMonth()]+' '+d.getFullYear();}
+function actLabel(row){
+  var name=esc(row.nick)+' ('+esc(row.username)+')';
+  if(row.kind==='checkin'){var z=ZB[row.detail];return name+' отметил(-ась): '+(z?esc(z.name):esc(row.detail));}
+  if(row.kind==='leave'){return name+' ушёл(ушла) с карты';}
+  if(row.kind==='invite'){return name+' создал(а) приглашение: «'+esc(row.detail||'')+'»';}
+  if(row.kind==='comment'){return name+' написал(а) комментарий: «'+esc(row.detail||'')+'»';}
+  if(row.kind==='loyalty'){
+    var byAdmin=/^admin:/.test(row.detail||'');
+    return name+(byAdmin?' получил(а) чашку от администратора':' сам(а) отметил(а) чашку');
+  }
+  return name+' · '+esc(row.kind);
+}
+function adminView(){
+  var users=state.adminUsers.slice().sort(function(a,b){return a.username<b.username?-1:1;});
+  var usersHtml=users.length?users.map(function(u){
+    return '<div class="person" style="align-items:flex-start;flex-wrap:wrap;gap:8px 12px">'+
+      '<span class="avl">'+esc(String(u.emoji||'🙂').slice(0,4))+'</span>'+
+      '<div style="flex:1;min-width:140px"><b>'+esc(u.nick)+'</b><span class="m">'+esc(u.username)+(u.is_admin?' · админ':'')+'</span></div>'+
+      '<div class="row" style="margin:0;gap:6px;align-items:center">'+
+        '<button class="btn line small" data-a="admin-drink" data-id="'+esc(u.id)+'" data-kind="loyalty" data-d="-1">−</button>'+
+        '<span style="min-width:52px;text-align:center">☕ '+u.loyalty+'/10</span>'+
+        '<button class="btn main small" data-a="admin-drink" data-id="'+esc(u.id)+'" data-kind="loyalty" data-d="1">+</button>'+
+      '</div>'+
+      '<div class="row" style="margin:0;gap:6px;align-items:center">'+
+        '<button class="btn line small" data-a="admin-drink" data-id="'+esc(u.id)+'" data-kind="teapots" data-d="-1">−</button>'+
+        '<span style="min-width:52px;text-align:center">🫖 '+u.teapots+'/8</span>'+
+        '<button class="btn main small" data-a="admin-drink" data-id="'+esc(u.id)+'" data-kind="teapots" data-d="1">+</button>'+
+      '</div>'+
+      '<div class="row" style="margin:0;gap:6px">'+
+        '<button class="btn line small" data-a="admin-open-password" data-id="'+esc(u.id)+'">Пароль</button>'+
+        (u.id===state.uid?'':'<button class="btn danger" style="padding:9px 15px;min-height:38px;font-size:14px" data-a="admin-delete-user" data-id="'+esc(u.id)+'">Удалить</button>')+
+      '</div>'+
+    '</div>';
+  }).join(''):'<p class="hint">Пока никто не зарегистрировался.</p>';
+
+  var present=people();
+  var mapHtml=present.length?present.map(function(p){
+    var z=ZB[p.zone];
+    return '<div class="person"><span class="avl">'+esc(String(p.emoji||'🙂').slice(0,4))+'</span>'+
+      '<div style="flex:1"><b>'+esc(p.nick)+'</b><span class="m">'+esc(z?z.name:p.zone)+'</span></div>'+
+      '<button class="btn danger" style="padding:9px 15px;min-height:38px;font-size:14px" data-a="admin-remove-presence" data-id="'+esc(p.id)+'">Убрать</button></div>';
+  }).join(''):'<p class="hint">Сейчас никого нет на карте.</p>';
+  var userOptions=users.map(function(u){return '<option value="'+esc(u.id)+'">'+esc(u.nick)+' ('+esc(u.username)+')</option>';}).join('');
+
+  var acts=state.adminActivity;
+  var actsHtml=acts.length?acts.map(function(r){
+    return '<div class="person"><span class="avl">'+esc(String(r.emoji||'🙂').slice(0,4))+'</span>'+
+      '<div style="flex:1"><b>'+fmtActTime(toMillis(r.at))+'</b><span class="m">'+actLabel(r)+'</span></div></div>';
+  }).join(''):'<p class="hint">За этот день событий не было.</p>';
+  var isToday=state.adminDate===todayStr();
+
+  var anns=state.adminAnnouncements||[];
+  var annHtml=anns.length?anns.map(function(a){
+    return '<div class="person" style="align-items:flex-start"><div style="flex:1"><b>'+esc(a.title)+'</b><span class="m" style="display:block">'+esc(a.body)+'</span></div>'+
+      '<button class="btn danger" style="padding:9px 15px;min-height:38px;font-size:14px" data-a="admin-delete-ann" data-id="'+esc(a.id)+'">Убрать</button></div>';
+  }).join(''):'<p class="hint">Объявлений пока нет.</p>';
+
+  var s=state.settings||{};
+  return '<div class="sec"><h2>Гости</h2></div><div class="card">'+usersHtml+'</div>'+
+
+    '<div class="sec" style="margin-top:22px"><h2>Карта</h2></div><div class="card">'+mapHtml+
+    '<div class="fl">Добавить на карту</div>'+
+    '<select class="inp" id="adm-user-sel" style="margin-bottom:8px">'+userOptions+'</select>'+
+    '<div class="two"><select class="inp" id="adm-zone-sel">'+zoneItemsRu().map(function(z){return '<option value="'+z[0]+'">'+z[1]+'</option>';}).join('')+'</select>'+
+    '<select class="inp" id="adm-mood-sel">'+moodItemsPlain().map(function(m){return '<option value="'+m[0]+'">'+m[1]+'</option>';}).join('')+'</select></div>'+
+    '<button class="btn main big" data-a="admin-add-presence">Добавить</button></div>'+
+
+    '<div class="sec" style="margin-top:22px"><h2>Объявления</h2></div><div class="card">'+annHtml+
+    '<div class="fl">Новое объявление</div>'+
+    '<input class="inp" id="adm-ann-title" maxlength="100" placeholder="Заголовок" style="margin-bottom:8px">'+
+    '<textarea class="tarea" id="adm-ann-body" maxlength="600" placeholder="Текст"></textarea>'+
+    '<button class="btn main big" data-a="admin-add-ann">Опубликовать</button></div>'+
+
+    '<div class="sec" style="margin-top:22px"><h2>Расписание и меню</h2></div><div class="card">'+
+    '<div class="fl" style="margin-top:0">Расписание (текст)</div>'+
+    '<p class="hint" style="margin-top:0">Часы работы, события недели — можно в несколько строк. Показывается на главной странице у всех гостей.</p>'+
+    '<textarea class="tarea" id="adm-hours" maxlength="600" rows="5" placeholder="Пн–Пт 16:00–22:00&#10;Сб–Вс 12:00–23:00&#10;Пт 19:00 — настолки">'+esc(s.hours||'')+'</textarea>'+
+    '<button class="btn main" style="margin-top:8px" data-a="admin-save-hours">Сохранить расписание</button>'+
+    '<div class="fl">Расписание картинкой (необязательно)</div>'+
+    (s.schedule_image?'<img class="adm-thumb" src="'+s.schedule_image+'" alt="">':'')+
+    '<input type="file" accept="image/*" id="adm-sched-file" style="margin-bottom:8px">'+
+    '<div class="row" style="margin-top:0"><button class="btn main small" data-a="admin-save-sched-img">Загрузить</button>'+
+    (s.schedule_image?'<button class="btn danger small" data-a="admin-clear-image" data-key="schedule_image">Убрать</button>':'')+'</div>'+
+    '<div class="fl">Меню кафе (картинка)</div>'+
+    (s.menu_image?'<img class="adm-thumb" src="'+s.menu_image+'" alt="">':'<p class="hint" style="margin-top:0">Меню ещё не загружено.</p>')+
+    '<input type="file" accept="image/*" id="adm-menu-file" style="margin-bottom:8px">'+
+    '<div class="row" style="margin-top:0"><button class="btn main small" data-a="admin-save-menu">Загрузить меню</button>'+
+    (s.menu_image?'<button class="btn danger small" data-a="admin-clear-image" data-key="menu_image">Убрать</button>':'')+'</div>'+
+    '<div class="fl">Фото этажей</div>'+
+    ZONES.map(function(z){return '<div class="hint" style="margin-top:0">'+esc(z.name)+'</div><img class="adm-thumb" src="'+z.img()+'" alt=""><input type="file" accept="image/*" id="adm-img-'+z.id+'" style="margin-bottom:8px">';}).join('')+
+    '<button class="btn main small" data-a="admin-save-images">Сохранить фото</button></div>'+
+
+    '<div class="sec" style="margin-top:22px"><h2>События'+(isToday?' сегодня':'')+'</h2>'+
+    '<div class="row" style="margin-top:0"><button class="btn line small" data-a="admin-day" data-d="-1">← День назад</button>'+
+    (isToday?'':'<button class="btn line small" data-a="admin-day" data-d="1">Вперёд →</button>')+'</div></div>'+
+    '<p class="hint" style="margin-top:0">'+esc(fmtDateOnly(state.adminDate))+'</p>'+
+    '<div class="card">'+actsHtml+'</div>';
+}
+function moodItemsPlain(){return Object.keys(MOODS).map(function(k){return [k,MOODS[k].label];});}
+function loadAdmin(){
+  apiStore.adminUsers().then(function(rows){state.adminUsers=rows;render();}).catch(function(e){toast(e.message||'Не получилось загрузить гостей');});
+  apiStore.adminActivity(state.adminDate).then(function(rows){state.adminActivity=rows;render();}).catch(function(e){toast(e.message||'Не получилось загрузить события');});
+  apiStore.adminAnnouncements().then(function(rows){state.adminAnnouncements=rows;render();}).catch(function(){});
+  apiStore.adminSettings().then(function(s){state.settings=s||{};render();}).catch(function(){});
+}
+
+/* ---------- Профиль ---------- */
+function profileView(){
+  var mine=myPresence();
+
+  var n=clamp(state.loyalty,0,CUP_GOAL);
+  var cups='';for(var i=0;i<CUP_GOAL;i++){cups+='<div class="cup'+(i<n?' on':'')+(i===CUP_GOAL-1&&n>=CUP_GOAL?' last':'')+'">☕</div>';}
+  var cupNote=n>=CUP_GOAL?t('cupFree'):t('cupsLeft',{n:(CUP_GOAL-n)});
+
+  var tp=clamp(state.teapots,0,TEAPOT_GOAL);
+  var pots='';for(var i=0;i<TEAPOT_GOAL;i++){pots+='<div class="cup'+(i<tp?' on':'')+(i===TEAPOT_GOAL-1&&tp>=TEAPOT_GOAL?' last':'')+'">🫖</div>';}
+  var potNote=tp>=TEAPOT_GOAL?t('potFree'):t('potsLeft',{n:(TEAPOT_GOAL-tp)});
+
+  return '<div class="card me-card"><div class="big-av">'+esc(state.me.emoji)+'</div><h2>'+esc(dispNick(state.me.nick))+'</h2>'+
+    '<div class="uname">'+esc(t('cabinet'))+esc(state.username||'')+'</div>'+
+    '<p>'+t('seenAs')+'</p>'+
+    '<div class="row" style="justify-content:center"><button class="btn main" data-a="reroll">'+t('btnReroll')+'</button>'+
+    (mine?'<button class="btn line" data-a="leave">'+t('btnLeaveMap')+'</button>':'')+'</div>'+
+    '<button class="btn danger" style="margin-top:10px" data-a="logout">'+t('btnLogout')+'</button></div>'+
+    '<div class="card"><div class="loy-head"><h2>'+t('yourCups')+'</h2><span class="loy-count">'+n+' / '+CUP_GOAL+'</span></div>'+
+    '<div class="cups">'+cups+'</div><p class="loy-note">'+cupNote+'</p></div>'+
+    '<div class="card"><div class="loy-head"><h2>'+t('yourPots')+'</h2><span class="loy-count">'+tp+' / '+TEAPOT_GOAL+'</span></div>'+
+    '<div class="cups">'+pots+'</div><p class="loy-note">'+potNote+'</p></div>'+
+    '<div class="card"><h2 style="font-family:var(--display);font-size:18px;letter-spacing:-.02em">'+t('rulesTitle')+'</h2><ul class="rules">'+
+    '<li>'+t('rule1')+'</li>'+
+    '<li>'+t('rule2')+'</li>'+
+    '<li>'+t('rule3')+'</li></ul>'+
+    '<p class="mode">'+t('modeNote')+'</p></div>';
+}
+
+/* ---------- Нижние листы ---------- */
+function chips(group,items,sel){
+  return '<div class="chips" role="group">'+items.map(function(it){
+    return '<button type="button" class="chip" data-a="chip" data-group="'+group+'" data-val="'+esc(it[0])+'" aria-pressed="'+(String(it[0])===String(sel))+'">'+it[1]+'</button>';
+  }).join('')+'</div>';
+}
+function zoneItems(){return ZONES.map(function(z){return [z.id,esc(zoneName(z.id))];});}
+function moodItems(){return Object.keys(MOODS).map(function(k){return [k,'<i class="dot" style="background:'+MOODS[k].color+'"></i>'+esc(moodLabel(k))];});}
+function zoneItemsRu(){return ZONES.map(function(z){return [z.id,esc(z.name)];});}
+
+function openSheet(kind,opts){
+  var mine=myPresence();
+  lastFocus=document.activeElement;
+  opts=opts||{};
+  sheet={kind:kind,id:opts.id,nick:opts.nick,f:{}};
+  if(kind==='checkin'){sheet.f={zone:opts.zone||(mine&&mine.zone)||'top',mood:(mine&&mine.mood)||'open'};}
+  if(kind==='invite'){var now=new Date();sheet.f={date:todayStr(now),time:nowTimeStr(now)};}
+  renderSheet(true);
+  var p=$sheet.querySelector('.panel');if(p)p.focus();
+}
+function closeSheet(){
+  sheet=null;$sheet.hidden=true;$sheet.innerHTML='';
+  if(lastFocus&&lastFocus.focus){try{lastFocus.focus();}catch(e){}}
+}
+function renderSheet(anim){
+  if(!sheet)return;
+  var inner='',title='';
+  if(sheet.kind==='zone'){
+    var z=ZB[sheet.id];if(!z){closeSheet();return;}
+    title=zoneName(z.id);
+    var here=people().filter(function(p){return p.zone===z.id;});
+    inner='<h2>'+esc(zoneName(z.id))+'</h2><p class="lead">'+(here.length?t('nowHere',{n:here.length}):t('nobodyHere'))+'</p><div style="margin-top:8px">'+
+      here.map(function(p){var m=MOODS[p.mood]||MOODS.quiet;
+        return '<div class="person"><span class="avl">'+esc(String(p.emoji||'🙂').slice(0,4))+'</span><div><b>'+esc(dispNick(p.nick))+(p.id===state.uid?t('youSuffix'):'')+'</b><span class="m"><i class="dot" style="background:'+m.color+'"></i>'+esc(moodLabel(p.mood))+'</span></div></div>';
+      }).join('')+'</div>'+
+      '<button class="btn main big" data-a="open-checkin" data-zone="'+z.id+'">'+t('btnCheckinHere')+'</button>';
+  }else if(sheet.kind==='checkin'){
+    title=t('checkinTitle');
+    inner='<h2>'+t('whereSit')+'</h2><p class="lead">'+t('nickLbl')+esc(state.me.emoji+' '+dispNick(state.me.nick))+'</p>'+
+      '<div class="fl">'+t('placeLbl')+'</div>'+chips('zone',zoneItems(),sheet.f.zone)+
+      '<div class="fl">'+t('moodLbl')+'</div>'+chips('mood',moodItems(),sheet.f.mood)+
+      '<button class="btn main big" data-a="do-checkin">'+t('btnCheckin')+'</button>';
+  }else if(sheet.kind==='invite'){
+    title=t('inviteSheetTitle');
+    inner='<h2>'+t('inviteHeading')+'</h2>'+
+      '<div class="fl"><label for="itext">'+t('inviteTextLbl')+'</label></div>'+
+      '<textarea class="tarea" id="itext" maxlength="220" placeholder="'+esc(t('invitePh'))+'"></textarea>'+
+      '<div class="fl">'+t('whenLbl')+'</div><div class="two">'+
+      '<div><label for="idate" style="font-size:13px;color:var(--muted)">'+t('dateLbl')+'</label><input class="inp" id="idate" type="date" value="'+esc(sheet.f.date)+'"></div>'+
+      '<div><label for="itime" style="font-size:13px;color:var(--muted)">'+t('timeLbl')+'</label><input class="inp" id="itime" type="time" value="'+esc(sheet.f.time)+'"></div></div>'+
+      '<button class="btn main big" data-a="do-invite">'+t('btnPublish')+'</button>';
+  }else if(sheet.kind==='admin-password'){
+    title='Новый пароль';
+    inner='<h2>Новый пароль</h2><p class="lead">Для гостя: '+esc(sheet.nick||'')+'</p>'+
+      '<div class="fl"><label for="adm-newpass">Пароль</label></div>'+
+      '<input class="inp" id="adm-newpass" type="text" maxlength="80" placeholder="Не меньше 4 символов">'+
+      '<button class="btn main big" data-a="admin-do-password">Сохранить пароль</button>';
+  }else if(sheet.kind==='menu'){
+    title=t('menuTitle');
+    inner='<h2>'+t('menuTitle')+'</h2>'+
+      (state.settings.menu_image?'<img src="'+state.settings.menu_image+'" alt="'+esc(t('btnMenu'))+'" style="width:100%;border-radius:16px;margin-top:12px">':'<p class="lead">'+t('menuNone')+'</p>');
+  }else if(sheet.kind==='schedule'){
+    title=t('scheduleTitle');
+    inner='<h2>'+t('scheduleTitle')+'</h2>'+
+      (state.settings.hours?'<p class="sched-txt">'+esc(state.settings.hours)+'</p>':'')+
+      (state.settings.schedule_image?'<img src="'+state.settings.schedule_image+'" alt="'+esc(t('scheduleTitle'))+'" style="width:100%;border-radius:16px;margin-top:12px">':(state.settings.hours?'':'<p class="lead">'+t('scheduleNone')+'</p>'));
+  }
+  $sheet.hidden=false;
+  $sheet.innerHTML='<div class="scrim" data-a="close"></div><div class="panel'+(anim?' enter':'')+'" role="dialog" aria-modal="true" aria-label="'+esc(title)+'" tabindex="-1"><div class="grab"></div>'+inner+'</div>';
+}
+
+/* ---------- Действия ---------- */
+function toast(msg){
+  $toast.textContent=msg;$toast.classList.add('on');
+  clearTimeout(toastT);toastT=setTimeout(function(){$toast.classList.remove('on');},2400);
+}
+function guard(promise,okMsg){
+  return promise.then(function(r){if(okMsg)toast(okMsg);return r;},function(e){
+    toast(e.network?t('errNet'):tErr(e.message||t('errSave')));
+    e.toasted=true;
+    throw e;
+  });
+}
+function refreshPresence(force){return apiStore.presenceList().then(function(rows){state.presence=rows;schedule(force);});}
+function refreshInvites(force){return apiStore.invitesList().then(function(rows){state.invites=rows;schedule(force);});}
+function refreshComments(force){return apiStore.commentsList().then(function(rows){state.comments=rows;schedule(force);});}
+function refreshSettings(force){return apiStore.settings().then(function(s){state.settings=s||{};schedule(force);}).catch(function(){});}
+function refreshAnnouncements(force){return apiStore.announcements().then(function(rows){state.announcements=rows;schedule(force);}).catch(function(){});}
+
+function doCheckin(){
+  var f=sheet.f;
+  guard(apiStore.checkin(f.zone,f.mood)).then(function(){
+    closeSheet();state.tab='cafe';render();toast(t('toastChecked',{z:zoneName(f.zone)}));
+    refreshPresence(true);
+  }).catch(function(){});
+}
+function doInvite(){
+  var txt=(document.getElementById('itext')||{}).value||'',date=(document.getElementById('idate')||{}).value||sheet.f.date,time=(document.getElementById('itime')||{}).value||sheet.f.time;
+  txt=txt.trim().slice(0,220);
+  if(!txt){toast(t('errInviteText'));return;}
+  guard(apiStore.createInvite(txt,date,time)).then(function(){
+    closeSheet();state.tab='invites';render();toast(t('toastInvitePosted'));
+    refreshInvites(true);
+  }).catch(function(){});
+}
+function leave(){guard(apiStore.leaveZone()).then(function(){toast(t('toastLeft'));refreshPresence(true);}).catch(function(){});}
+function closeInvite(id){guard(apiStore.deleteInvite(id)).then(function(){toast(t('toastInviteDeleted'));refreshInvites(true);}).catch(function(){});}
+function sendComment(id,text){
+  text=(text||'').trim().slice(0,140);if(!text)return;
+  guard(apiStore.addComment(id,text)).then(function(){refreshComments(true);}).catch(function(){});
+}
+function reroll(){
+  guard(apiStore.reroll()).then(function(persona){
+    state.me=persona;render();
+    if(myPresence())refreshPresence(true);
+  }).catch(function(){});
+}
+function adminDrink(id,kind,delta){
+  guard(apiStore.adminDrink(id,kind,delta)).then(function(r){
+    var u=state.adminUsers.filter(function(x){return x.id===id;})[0];
+    if(u)u[kind]=r.value;
+    render();
+  }).catch(function(){});
+}
+function adminOpenPassword(id){
+  var u=state.adminUsers.filter(function(x){return x.id===id;})[0];
+  openSheet('admin-password',{id:id,nick:u?u.nick:id});
+}
+function adminSetPasswordDo(){
+  var pass=(document.getElementById('adm-newpass')||{}).value||'';
+  if(pass.length<4){toast('Пароль — минимум 4 символа');return;}
+  guard(apiStore.adminSetPassword(sheet.id,pass)).then(function(){closeSheet();toast('Пароль обновлён');}).catch(function(){});
+}
+function adminDeleteUser(id){
+  if(!window.confirm('Удалить этот аккаунт насовсем? Действие необратимо.'))return;
+  guard(apiStore.adminDeleteUser(id)).then(function(){
+    state.adminUsers=state.adminUsers.filter(function(x){return x.id!==id;});
+    render();toast('Аккаунт удалён');
+  }).catch(function(){});
+}
+function adminRemovePresence(id){
+  guard(apiStore.adminRemovePresence(id)).then(function(){refreshPresence(true);toast('Убрано с карты');}).catch(function(){});
+}
+function adminAddPresence(){
+  var id=(document.getElementById('adm-user-sel')||{}).value;
+  var zone=(document.getElementById('adm-zone-sel')||{}).value;
+  var mood=(document.getElementById('adm-mood-sel')||{}).value;
+  if(!id){toast('Выберите гостя');return;}
+  guard(apiStore.adminAddPresence(id,zone,mood)).then(function(){refreshPresence(true);toast('Добавлено на карту');}).catch(function(){});
+}
+function adminAddAnn(){
+  var title=(document.getElementById('adm-ann-title')||{}).value||'';
+  var body=(document.getElementById('adm-ann-body')||{}).value||'';
+  if(!title.trim()||!body.trim()){toast('Заполните заголовок и текст');return;}
+  guard(apiStore.adminAddAnnouncement(title.trim(),body.trim())).then(function(){
+    document.getElementById('adm-ann-title').value='';document.getElementById('adm-ann-body').value='';
+    apiStore.adminAnnouncements().then(function(rows){state.adminAnnouncements=rows;render();});
+    refreshAnnouncements(true);toast('Объявление опубликовано');
+  }).catch(function(){});
+}
+function adminDeleteAnn(id){
+  guard(apiStore.adminDeleteAnnouncement(id)).then(function(){
+    state.adminAnnouncements=state.adminAnnouncements.filter(function(x){return x.id!==id;});
+    render();refreshAnnouncements(true);
+  }).catch(function(){});
+}
+function adminSaveHours(){
+  var text=(document.getElementById('adm-hours')||{}).value||'';
+  guard(apiStore.adminSetSettings({hours:text})).then(function(s){
+    state.settings=s;render();refreshSettings(true);toast('Расписание сохранено');
+  }).catch(function(){});
+}
+/* Сжимаем фото прямо на телефоне: снимки с камеры весят несколько МБ и не проходят на сервер. */
+function compressImage(file,maxDim,quality){
+  return new Promise(function(resolve,reject){
+    var url=URL.createObjectURL(file);
+    var img=new Image();
+    img.onload=function(){
+      try{
+        var w=img.naturalWidth||img.width,hh=img.naturalHeight||img.height;
+        var k=Math.min(1,maxDim/Math.max(w,hh));
+        var cw=Math.max(1,Math.round(w*k)),ch=Math.max(1,Math.round(hh*k));
+        var c=document.createElement('canvas');c.width=cw;c.height=ch;
+        var ctx=c.getContext('2d');
+        ctx.fillStyle='#fff';ctx.fillRect(0,0,cw,ch);ctx.drawImage(img,0,0,cw,ch);
+        URL.revokeObjectURL(url);
+        resolve(c.toDataURL('image/jpeg',quality));
+      }catch(e){URL.revokeObjectURL(url);reject(e);}
+    };
+    img.onerror=function(){URL.revokeObjectURL(url);reject(new Error('img'));};
+    img.src=url;
+  });
+}
+function firstFile(id){var el=document.getElementById(id);return el&&el.files&&el.files[0]?el.files[0]:null;}
+function adminUploadImages(entries,okMsg){
+  if(!entries.length){toast('Сначала выберите файл');return;}
+  toast('Загружаю…');
+  Promise.all(entries.map(function(e){
+    return compressImage(e.file,e.maxDim,e.quality).then(function(url){return [e.key,url];});
+  })).then(function(pairs){
+    var partial={};pairs.forEach(function(pr){partial[pr[0]]=pr[1];});
+    return guard(apiStore.adminSetSettings(partial));
+  }).then(function(s){
+    state.settings=s;render();refreshSettings(true);toast(okMsg);
+  }).catch(function(e){
+    if(!e||!e.toasted)toast('Не удалось прочитать картинку. Попробуйте JPG или PNG.');
+  });
+}
+function adminSaveMenu(){
+  var f=firstFile('adm-menu-file');
+  adminUploadImages(f?[{key:'menu_image',file:f,maxDim:1800,quality:.85}]:[],'Меню сохранено');
+}
+function adminSaveSchedImg(){
+  var f=firstFile('adm-sched-file');
+  adminUploadImages(f?[{key:'schedule_image',file:f,maxDim:1800,quality:.85}]:[],'Расписание-картинка сохранена');
+}
+function adminSaveImages(){
+  var entries=[];
+  [['top','adm-img-top'],['middle','adm-img-middle'],['basement','adm-img-basement']].forEach(function(z){
+    var f=firstFile(z[1]);if(f)entries.push({key:'zone_img_'+z[0],file:f,maxDim:1200,quality:.8});
+  });
+  adminUploadImages(entries,'Фото сохранены');
+}
+function adminClearImage(key){
+  var partial={};partial[key]='';
+  guard(apiStore.adminSetSettings(partial)).then(function(s){state.settings=s;render();refreshSettings(true);toast('Убрано');}).catch(function(){});
+}
+function adminChangeDay(delta){
+  var d=new Date(state.adminDate+'T00:00:00');
+  d.setDate(d.getDate()+delta);
+  var next=todayStr(d);
+  if(next>todayStr())return; // нельзя заглянуть в будущее
+  state.adminDate=next;render();loadAdmin();
+}
+
+/* ---------- События ---------- */
+document.addEventListener('submit',function(e){
+  var f=e.target.closest?e.target.closest('#loginForm'):null;
+  if(f){e.preventDefault();doAuth();}
+});
+document.addEventListener('click',function(e){
+  var el=e.target.closest?e.target.closest('[data-a]'):null;if(!el)return;
+  var a=el.getAttribute('data-a'),id=el.getAttribute('data-id');
+  if(a==='auth-mode'){state.authMode=el.getAttribute('data-mode');state.loginErr='';render();}
+  else if(a==='do-auth'){doAuth();}
+  else if(a==='tab'){state.tab=id;render();if(id==='admin'&&state.isAdmin)loadAdmin();}
+  else if(a==='zone'){openSheet('zone',{id:id});}
+  else if(a==='open-checkin'){openSheet('checkin',{zone:el.getAttribute('data-zone')||undefined});}
+  else if(a==='open-invite'){openSheet('invite');}
+  else if(a==='close'){closeSheet();}
+  else if(a==='chip'&&sheet){
+    var g=el.getAttribute('data-group'),v=el.getAttribute('data-val');
+    sheet.f[g]=v;
+    Array.prototype.forEach.call(el.parentNode.children,function(c){c.setAttribute('aria-pressed',c===el?'true':'false');});
+  }
+  else if(a==='do-checkin'&&sheet){doCheckin();}
+  else if(a==='do-invite'&&sheet){doInvite();}
+  else if(a==='leave'){leave();}
+  else if(a==='close-invite'){closeInvite(id);}
+  else if(a==='send-comment'){
+    var input=document.querySelector('input[data-cid="'+id+'"]');
+    if(input){sendComment(id,input.value);input.value='';}
+  }
+  else if(a==='reroll'){reroll();}
+  else if(a==='admin-drink'){adminDrink(id,el.getAttribute('data-kind'),Number(el.getAttribute('data-d')));}
+  else if(a==='admin-open-password'){adminOpenPassword(id);}
+  else if(a==='admin-do-password'&&sheet){adminSetPasswordDo();}
+  else if(a==='admin-delete-user'){adminDeleteUser(id);}
+  else if(a==='admin-remove-presence'){adminRemovePresence(id);}
+  else if(a==='admin-add-presence'){adminAddPresence();}
+  else if(a==='admin-add-ann'){adminAddAnn();}
+  else if(a==='admin-delete-ann'){adminDeleteAnn(id);}
+  else if(a==='admin-save-hours'){adminSaveHours();}
+  else if(a==='admin-save-menu'){adminSaveMenu();}
+  else if(a==='admin-save-sched-img'){adminSaveSchedImg();}
+  else if(a==='admin-clear-image'){adminClearImage(el.getAttribute('data-key'));}
+  else if(a==='admin-save-images'){adminSaveImages();}
+  else if(a==='admin-day'){adminChangeDay(Number(el.getAttribute('data-d')));}
+  else if(a==='open-menu'){openSheet('menu');}
+  else if(a==='open-schedule'){openSheet('schedule');}
+  else if(a==='wall-toggle'){state.wallAll=!state.wallAll;render();}
+  else if(a==='logout'){logout();}
+  else if(a==='set-lang'){setLang(el.getAttribute('data-lang'));}
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&sheet){closeSheet();return;}
+  if(e.key==='Enter'&&e.target&&e.target.matches&&e.target.matches('input[data-cid]')){
+    var cid=e.target.getAttribute('data-cid');sendComment(cid,e.target.value);e.target.value='';
+  }
+});
+
+function tick(){
+  var el=document.getElementById('timer'),m=myPresence();
+  if(el&&m)el.textContent=fmtDur(Date.now()-toMillis(m.at));
+}
+setInterval(tick,1000);
+
+function schedule(force){
+  if(force)forceRender=true;
+  if(raf)return;
+  raf=requestAnimationFrame(function(){
+    raf=0;var f=forceRender;forceRender=false;
+    if(!f&&state.screen==='app'&&isFormDirty())return;
+    render();if(sheet&&sheet.kind==='zone')renderSheet(false);
+  });
+}
+
+/* ---------- Опрос сервера (простая замена realtime) ---------- */
+function subscribe(){
+  refreshPresence(true);refreshInvites(true);refreshComments(true);refreshSettings(true);refreshAnnouncements(true);
+  polls.push(setInterval(function(){refreshPresence();},POLL_MS));
+  polls.push(setInterval(function(){refreshInvites();},POLL_MS));
+  polls.push(setInterval(function(){refreshComments();},POLL_MS));
+  polls.push(setInterval(function(){refreshSettings();},POLL_MS*3));
+  polls.push(setInterval(function(){refreshAnnouncements();},POLL_MS*3));
+  if(!visBound){
+    visBound=true;
+    document.addEventListener('visibilitychange',function(){
+      if(document.visibilityState==='visible'&&state.screen==='app'){refreshPresence();refreshInvites();refreshComments();refreshSettings();refreshAnnouncements();}
+    });
+  }
+}
+
+/* ---------- Запуск ---------- */
+function boot(){
+  apiStore.me().then(function(acc){
+    state.uid=acc.id;state.username=acc.username;state.me={nick:acc.nick,emoji:acc.emoji};state.loyalty=Number(acc.loyalty)||0;state.teapots=Number(acc.teapots)||0;state.isAdmin=!!acc.is_admin;
+    afterLogin();
+  }).catch(function(){
+    state.screen='login';render();
+  });
+}
+boot();
+})();
+</script>
+</body>
+</html>
