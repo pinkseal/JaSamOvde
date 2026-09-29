@@ -107,8 +107,6 @@ h1,h2,h3,p{margin:0}
 .zc-mine-badge{position:absolute;top:10px;left:10px;background:var(--coral);color:#fff;font-weight:700;font-size:12px;border-radius:999px;padding:4px 10px}
 .zc-avs{position:absolute;right:12px;bottom:12px;display:flex}
 .zc-avs .avl{width:26px;height:26px;font-size:14px;border:2px solid rgba(255,255,255,.9);margin-left:-8px;background:var(--card)}
-.zc-arrow{display:flex;justify-content:center;margin:-8px 0 0}
-.zc-arrow span{background:var(--mint);color:var(--on-mint);width:32px;height:32px;border-radius:50%;display:grid;place-items:center;border:4px solid var(--bg);font-size:15px}
 
 
 /* ---- Профиль заведения и «стена» (в духе соцсети): контурные карточки как у логотипа ---- */
@@ -143,6 +141,11 @@ h1,h2,h3,p{margin:0}
 .post p{margin:6px 0 0;font-size:15px;white-space:pre-line}
 .wall-more{margin-top:12px;width:100%}
 .sched-txt{white-space:pre-line;font-size:16px;margin-top:10px}
+.adm-subnav{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:4px;-webkit-overflow-scrolling:touch}
+.adm-subnav::-webkit-scrollbar{display:none}
+.adm-subtab{flex:none;border:2px solid var(--line);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap}
+.adm-subtab.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.adm-search{margin-top:10px}
 .adm-thumb{display:block;max-height:70px;max-width:100%;border-radius:10px;border:1px solid var(--line);margin:0 0 8px}
 
 /* ---- invites ---- */
@@ -185,13 +188,15 @@ h1,h2,h3,p{margin:0}
 .loy-note{margin-top:12px;font-size:14px;color:var(--muted)}
 .loy-note b{color:var(--coral)}
 
-.tabs{display:flex;background:var(--card);border-top:1px solid var(--line)}
-.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px 10px;font-size:12px;font-weight:600;color:var(--muted);position:relative}
-.tabs .ic{width:52px;height:30px;border-radius:999px;display:grid;place-items:center;transition:background .15s,color .15s}
+.tabs{display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs button{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px 8px;font-weight:600;color:var(--muted)}
+.tabs .ic-wrap{position:relative;display:inline-flex}
+.tabs .ic{width:clamp(40px,13vw,52px);height:30px;border-radius:999px;display:grid;place-items:center;transition:background .15s,color .15s}
+.tabs .tab-lbl{font-size:clamp(10.5px,3.1vw,12px);line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .tabs svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .tabs button[aria-current="page"]{color:var(--ink);font-weight:800}
 .tabs button[aria-current="page"] .ic{background:var(--mint);color:var(--on-mint);box-shadow:0 2px 6px rgba(0,0,0,.12)}
-.badge{position:absolute;top:4px;left:calc(50% + 10px);min-width:18px;height:18px;border-radius:9px;background:var(--coral);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 5px}
+.badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:var(--coral);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 5px;border:2px solid var(--card)}
 
 #sheet{position:fixed;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center}
 #sheet[hidden]{display:none}
@@ -463,7 +468,7 @@ var apiStore={
 
 /* ---------- Состояние ---------- */
 var $app=document.getElementById('app'),$sheet=document.getElementById('sheet'),$toast=document.getElementById('toast');
-var state={screen:'boot',tab:'cafe',authMode:'login',uid:null,username:null,me:null,loyalty:0,teapots:0,isAdmin:false,lang:(lsGet('yz_lang')||'ru'),presence:[],invites:[],comments:[],announcements:[],settings:{},adminUsers:[],adminActivity:[],adminDate:todayStr(),adminAnnouncements:[],menuOpen:false,wallAll:false,loginErr:'',loginBusy:false};
+var state={screen:'boot',tab:'cafe',authMode:'login',uid:null,username:null,me:null,loyalty:0,teapots:0,isAdmin:false,lang:(lsGet('yz_lang')||'ru'),presence:[],invites:[],comments:[],announcements:[],settings:{},adminUsers:[],adminActivity:[],adminDate:todayStr(),adminAnnouncements:[],adminTab:'users',adminUserQuery:'',menuOpen:false,wallAll:false,lastSeenInvites:(Number(lsGet('yz_seen_invites'))||0),loginErr:'',loginBusy:false};
 var sheet=null,lastFocus=null,raf=0,forceRender=false,visBound=false,toastT=0,polls=[];
 
 function people(){var t=Date.now();return state.presence.filter(function(p){return ZB[p.zone]&&t-toMillis(p.at)<6*H;});}
@@ -529,7 +534,9 @@ function render(){
   var cap=captureForm();
   if(state.screen==='login'){$app.innerHTML=loginView();restoreForm(cap);return;}
   var sc=document.getElementById('main'),top=sc?sc.scrollTop:0;
-  var n=people().length,ni=activeInvites().length;
+  var n=people().length;
+  if(state.tab==='invites'){state.lastSeenInvites=Date.now();lsSet('yz_seen_invites',String(state.lastSeenInvites));}
+  var ni=activeInvites().filter(function(i){return toMillis(i.created_at)>(state.lastSeenInvites||0);}).length;
   var body=state.tab==='cafe'?cafeView():state.tab==='invites'?invitesView():state.tab==='admin'?adminView():profileView();
   $app.innerHTML=
     '<header class="top"><div class="brand"><img src="'+LOGO_ICON+'" alt=""><div class="brand-txt"><span class="brand-t">Seal&amp;Tea</span><span class="brand-s">'+t('tagline')+'</span></div></div>'+
@@ -550,8 +557,9 @@ function langSwitch(){
   '</div>';
 }
 function tab(id,label,icon,badge){
-  return '<button data-a="tab" data-id="'+id+'"'+(state.tab===id?' aria-current="page"':'')+'><span class="ic">'+icon+'</span>'+label+
-    (badge?'<span class="badge">'+badge+'</span>':'')+'</button>';
+  return '<button data-a="tab" data-id="'+id+'"'+(state.tab===id?' aria-current="page"':'')+'>'+
+    '<span class="ic-wrap"><span class="ic">'+icon+'</span>'+(badge?'<span class="badge">'+badge+'</span>':'')+'</span>'+
+    '<span class="tab-lbl">'+esc(label)+'</span></button>';
 }
 
 /* ---------- Логин / регистрация ---------- */
@@ -613,7 +621,7 @@ function venueCardView(){
   return '<section class="prof">'+
     '<div class="prof-cover"><img src="'+LOGIN_PHOTO+'" alt=""></div>'+
     '<div class="prof-body"><div class="prof-head"><div class="prof-ava"><img src="'+LOGO_ICON+'" alt="Seal&amp;Tea"></div><div class="prof-name">Seal&amp;Tea</div></div>'+
-    '<p class="prof-bio">'+esc(t('profBio'))+'</p>'+rows+
+    '<p class="prof-bio">'+esc(s.description||t('profBio'))+'</p>'+rows+
     '<div class="prof-stats">'+statChip(people().length,t('statInHall'))+statChip((state.announcements||[]).length,t('statPosts'))+statChip(activeInvites().length,t('statInvites'))+'</div>'+
     (actions?'<div class="prof-actions">'+actions+'</div>':'')+
     '</div></section>';
@@ -644,13 +652,12 @@ function cafeView(){
   var list=people();
   var legend=Object.keys(MOODS).map(function(k){return '<span><i class="dot" style="background:'+MOODS[k].color+'"></i>'+esc(moodLabel(k))+'</span>';}).join('');
   var hint=list.length?'':'<p class="hint">'+t('emptyHall')+'</p>';
-  var cards=ZONES.map(function(z,idx){
+  var cards=ZONES.map(function(z){
     var here=list.filter(function(p){return p.zone===z.id;});
     var isMine=mine&&mine.zone===z.id;
     var zn=zoneName(z.id);
     var avs=here.slice(0,4).map(function(p){return '<span class="avl">'+esc(String(p.emoji||'🙂').slice(0,4))+'</span>';}).join('');
-    var arrow=idx===1?'<div class="zc-arrow"><span>↓</span></div>':'';
-    return arrow+'<button class="zc'+(isMine?' mine':'')+'" data-a="zone" data-id="'+z.id+'" aria-label="'+esc(zn)+', '+esc(t('peopleCount',{n:here.length}))+'">'+
+    return '<button class="zc'+(isMine?' mine':'')+'" data-a="zone" data-id="'+z.id+'" aria-label="'+esc(zn)+', '+esc(t('peopleCount',{n:here.length}))+'">'+
       '<img src="'+z.img()+'" alt="'+esc(zn)+'">'+
       '<div class="zc-grad"></div>'+
       (isMine?'<div class="zc-mine-badge">'+esc(t('youHere'))+'</div>':'')+
@@ -705,8 +712,16 @@ function actLabel(row){
   }
   return name+' · '+esc(row.kind);
 }
-function adminView(){
-  var users=state.adminUsers.slice().sort(function(a,b){return a.username<b.username?-1:1;});
+function adminSubtabs(){
+  var tabs=[['users','Гости'],['map','Карта'],['wall','Стена'],['settings','Заведение'],['log','События']];
+  return '<div class="adm-subnav">'+tabs.map(function(tb){
+    return '<button class="adm-subtab'+(state.adminTab===tb[0]?' on':'')+'" data-a="admin-subtab" data-tab="'+tb[0]+'">'+tb[1]+'</button>';
+  }).join('')+'</div>';
+}
+function adminUsersView(){
+  var q=(state.adminUserQuery||'').trim().toLowerCase();
+  var all=state.adminUsers.slice().sort(function(a,b){return a.username<b.username?-1:1;});
+  var users=q?all.filter(function(u){return (u.nick||'').toLowerCase().indexOf(q)!==-1||(u.username||'').toLowerCase().indexOf(q)!==-1;}):all;
   var usersHtml=users.length?users.map(function(u){
     return '<div class="person" style="align-items:flex-start;flex-wrap:wrap;gap:8px 12px">'+
       '<span class="avl">'+esc(String(u.emoji||'🙂').slice(0,4))+'</span>'+
@@ -726,8 +741,13 @@ function adminView(){
         (u.id===state.uid?'':'<button class="btn danger" style="padding:9px 15px;min-height:38px;font-size:14px" data-a="admin-delete-user" data-id="'+esc(u.id)+'">Удалить</button>')+
       '</div>'+
     '</div>';
-  }).join(''):'<p class="hint">Пока никто не зарегистрировался.</p>';
-
+  }).join(''):(all.length?'<p class="hint">Никого не нашлось по запросу «'+esc(state.adminUserQuery)+'».</p>':'<p class="hint">Пока никто не зарегистрировался.</p>');
+  return '<div class="sec"><h2>Гости ('+(q?users.length+' из '+all.length:all.length)+')</h2></div>'+
+    '<input class="inp adm-search" id="adm-user-search" type="search" placeholder="Искать по нику или логину…" value="'+esc(state.adminUserQuery||'')+'">'+
+    '<div class="card">'+usersHtml+'</div>';
+}
+function adminMapView(){
+  var users=state.adminUsers.slice().sort(function(a,b){return a.username<b.username?-1:1;});
   var present=people();
   var mapHtml=present.length?present.map(function(p){
     var z=ZB[p.zone];
@@ -736,35 +756,31 @@ function adminView(){
       '<button class="btn danger" style="padding:9px 15px;min-height:38px;font-size:14px" data-a="admin-remove-presence" data-id="'+esc(p.id)+'">Убрать</button></div>';
   }).join(''):'<p class="hint">Сейчас никого нет на карте.</p>';
   var userOptions=users.map(function(u){return '<option value="'+esc(u.id)+'">'+esc(u.nick)+' ('+esc(u.username)+')</option>';}).join('');
-
-  var acts=state.adminActivity;
-  var actsHtml=acts.length?acts.map(function(r){
-    return '<div class="person"><span class="avl">'+esc(String(r.emoji||'🙂').slice(0,4))+'</span>'+
-      '<div style="flex:1"><b>'+fmtActTime(toMillis(r.at))+'</b><span class="m">'+actLabel(r)+'</span></div></div>';
-  }).join(''):'<p class="hint">За этот день событий не было.</p>';
-  var isToday=state.adminDate===todayStr();
-
+  return '<div class="sec"><h2>Карта</h2></div><div class="card">'+mapHtml+
+    '<div class="fl">Добавить на карту</div>'+
+    '<select class="inp" id="adm-user-sel" style="margin-bottom:8px">'+userOptions+'</select>'+
+    '<div class="two"><select class="inp" id="adm-zone-sel">'+zoneItemsRu().map(function(z){return '<option value="'+z[0]+'">'+z[1]+'</option>';}).join('')+'</select>'+
+    '<select class="inp" id="adm-mood-sel">'+moodItemsPlain().map(function(m){return '<option value="'+m[0]+'">'+m[1]+'</option>';}).join('')+'</select></div>'+
+    '<button class="btn main big" data-a="admin-add-presence">Добавить</button></div>';
+}
+function adminWallView(){
   var anns=state.adminAnnouncements||[];
   var annHtml=anns.length?anns.map(function(a){
     return '<div class="person" style="align-items:flex-start"><div style="flex:1"><b>'+esc(a.title)+'</b><span class="m" style="display:block">'+esc(a.body)+'</span></div>'+
       '<button class="btn danger" style="padding:9px 15px;min-height:38px;font-size:14px" data-a="admin-delete-ann" data-id="'+esc(a.id)+'">Убрать</button></div>';
   }).join(''):'<p class="hint">Объявлений пока нет.</p>';
-
-  var s=state.settings||{};
-  return '<div class="sec"><h2>Гости</h2></div><div class="card">'+usersHtml+'</div>'+
-
-    '<div class="sec" style="margin-top:22px"><h2>Карта</h2></div><div class="card">'+mapHtml+
-    '<div class="fl">Добавить на карту</div>'+
-    '<select class="inp" id="adm-user-sel" style="margin-bottom:8px">'+userOptions+'</select>'+
-    '<div class="two"><select class="inp" id="adm-zone-sel">'+zoneItemsRu().map(function(z){return '<option value="'+z[0]+'">'+z[1]+'</option>';}).join('')+'</select>'+
-    '<select class="inp" id="adm-mood-sel">'+moodItemsPlain().map(function(m){return '<option value="'+m[0]+'">'+m[1]+'</option>';}).join('')+'</select></div>'+
-    '<button class="btn main big" data-a="admin-add-presence">Добавить</button></div>'+
-
-    '<div class="sec" style="margin-top:22px"><h2>Объявления</h2></div><div class="card">'+annHtml+
+  return '<div class="sec"><h2>Объявления</h2></div><div class="card">'+annHtml+
     '<div class="fl">Новое объявление</div>'+
     '<input class="inp" id="adm-ann-title" maxlength="100" placeholder="Заголовок" style="margin-bottom:8px">'+
     '<textarea class="tarea" id="adm-ann-body" maxlength="600" placeholder="Текст"></textarea>'+
-    '<button class="btn main big" data-a="admin-add-ann">Опубликовать</button></div>'+
+    '<button class="btn main big" data-a="admin-add-ann">Опубликовать</button></div>';
+}
+function adminSettingsView(){
+  var s=state.settings||{};
+  return '<div class="sec"><h2>Описание</h2></div><div class="card">'+
+    '<p class="hint" style="margin-top:0">Короткая строка под названием на главной странице.</p>'+
+    '<input class="inp" id="adm-description" maxlength="120" value="'+esc(s.description||STRINGS.ru.profBio)+'">'+
+    '<button class="btn main" style="margin-top:8px" data-a="admin-save-description">Сохранить описание</button></div>'+
 
     '<div class="sec" style="margin-top:22px"><h2>Расписание и меню</h2></div><div class="card">'+
     '<div class="fl" style="margin-top:0">Расписание (текст)</div>'+
@@ -783,13 +799,25 @@ function adminView(){
     (s.menu_image?'<button class="btn danger small" data-a="admin-clear-image" data-key="menu_image">Убрать</button>':'')+'</div>'+
     '<div class="fl">Фото этажей</div>'+
     ZONES.map(function(z){return '<div class="hint" style="margin-top:0">'+esc(z.name)+'</div><img class="adm-thumb" src="'+z.img()+'" alt=""><input type="file" accept="image/*" id="adm-img-'+z.id+'" style="margin-bottom:8px">';}).join('')+
-    '<button class="btn main small" data-a="admin-save-images">Сохранить фото</button></div>'+
-
-    '<div class="sec" style="margin-top:22px"><h2>События'+(isToday?' сегодня':'')+'</h2>'+
+    '<button class="btn main small" data-a="admin-save-images">Сохранить фото</button></div>';
+}
+function adminLogView(){
+  var acts=state.adminActivity;
+  var actsHtml=acts.length?acts.map(function(r){
+    return '<div class="person"><span class="avl">'+esc(String(r.emoji||'🙂').slice(0,4))+'</span>'+
+      '<div style="flex:1"><b>'+fmtActTime(toMillis(r.at))+'</b><span class="m">'+actLabel(r)+'</span></div></div>';
+  }).join(''):'<p class="hint">За этот день событий не было.</p>';
+  var isToday=state.adminDate===todayStr();
+  return '<div class="sec"><h2>События'+(isToday?' сегодня':'')+'</h2>'+
     '<div class="row" style="margin-top:0"><button class="btn line small" data-a="admin-day" data-d="-1">← День назад</button>'+
     (isToday?'':'<button class="btn line small" data-a="admin-day" data-d="1">Вперёд →</button>')+'</div></div>'+
     '<p class="hint" style="margin-top:0">'+esc(fmtDateOnly(state.adminDate))+'</p>'+
     '<div class="card">'+actsHtml+'</div>';
+}
+function adminView(){
+  return adminSubtabs()+({
+    users:adminUsersView, map:adminMapView, wall:adminWallView, settings:adminSettingsView, log:adminLogView
+  }[state.adminTab]||adminUsersView)();
 }
 function moodItemsPlain(){return Object.keys(MOODS).map(function(k){return [k,MOODS[k].label];});}
 function loadAdmin(){
@@ -994,6 +1022,12 @@ function adminDeleteAnn(id){
     render();refreshAnnouncements(true);
   }).catch(function(){});
 }
+function adminSaveDescription(){
+  var text=(document.getElementById('adm-description')||{}).value||'';
+  guard(apiStore.adminSetSettings({description:text})).then(function(s){
+    state.settings=s;render();refreshSettings(true);toast('Описание сохранено');
+  }).catch(function(){});
+}
 function adminSaveHours(){
   var text=(document.getElementById('adm-hours')||{}).value||'';
   guard(apiStore.adminSetSettings({hours:text})).then(function(s){
@@ -1100,17 +1134,22 @@ document.addEventListener('click',function(e){
   else if(a==='admin-add-presence'){adminAddPresence();}
   else if(a==='admin-add-ann'){adminAddAnn();}
   else if(a==='admin-delete-ann'){adminDeleteAnn(id);}
+  else if(a==='admin-save-description'){adminSaveDescription();}
   else if(a==='admin-save-hours'){adminSaveHours();}
   else if(a==='admin-save-menu'){adminSaveMenu();}
   else if(a==='admin-save-sched-img'){adminSaveSchedImg();}
   else if(a==='admin-clear-image'){adminClearImage(el.getAttribute('data-key'));}
   else if(a==='admin-save-images'){adminSaveImages();}
   else if(a==='admin-day'){adminChangeDay(Number(el.getAttribute('data-d')));}
+  else if(a==='admin-subtab'){state.adminTab=el.getAttribute('data-tab');render();}
   else if(a==='open-menu'){openSheet('menu');}
   else if(a==='open-schedule'){openSheet('schedule');}
   else if(a==='wall-toggle'){state.wallAll=!state.wallAll;render();}
   else if(a==='logout'){logout();}
   else if(a==='set-lang'){setLang(el.getAttribute('data-lang'));}
+});
+document.addEventListener('input',function(e){
+  if(e.target&&e.target.id==='adm-user-search'){state.adminUserQuery=e.target.value;schedule(true);}
 });
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape'&&sheet){closeSheet();return;}
